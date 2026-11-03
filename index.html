@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Seongjin Kim, mechanical engineering at the University of Toronto. Motion control, additive manufacturing, CAD.">
+<style>html{color-scheme:light}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Seongjin Kim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Single white theme on purpose: CAD captures are gray bodies with black edges on
+     transparent PNGs, and the site supplies the white (README, decisions locked). */
+  :root{
+    --paper:#FFFFFF; --ink:#0F1317; --body:#2B3138; --mute:#6C747E;
+    --rule:#DFE3E8; --rule-hi:#BAC0C7; --slot:#F3F5F8;
+    --accent:#0B63A5; --accent-dk:#08507F; --accent-soft:#E8F0F7;
+    --warn:#8A5300; --warn-soft:#FFF3DD;
+    --f:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --m:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --mk:52px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--body);font-family:var(--f);
+    font-size:15.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent)}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .shell{max-width:880px;margin-inline:auto;padding-inline:clamp(16px,4vw,32px)}
+
+  .draft-bar{background:var(--warn-soft);color:var(--warn);font-family:var(--m);font-size:11.5px;
+    line-height:1.5;padding:8px clamp(16px,4vw,32px);text-align:center}
+
+  /* masthead */
+  .mast{padding-block:clamp(40px,7vw,72px) 8px}
+  .mast h1{margin:0;font-size:clamp(30px,4.6vw,42px);line-height:1.05;letter-spacing:-.035em;
+    font-weight:700;color:var(--ink)}
+  .mast .ko{font-family:var(--m);font-size:12.5px;color:var(--mute);letter-spacing:.06em;margin-top:6px}
+  .mast .who{margin:10px 0 0;font-size:14.5px;color:var(--mute)}
+  .mast .lede{margin:22px 0 0;font-size:clamp(17px,2.1vw,20px);line-height:1.45;color:var(--ink);
+    max-width:44ch;letter-spacing:-.012em;text-wrap:balance}
+  .avail{display:inline-block;margin-top:16px;font-family:var(--m);font-size:11px;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:4px 9px;border-radius:2px}
+  .links{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;margin-top:22px}
+  .links .txt{font-family:var(--m);font-size:12px;color:var(--mute);text-decoration:none}
+  .links a.txt:hover{color:var(--accent)}
+  .cta{display:inline-flex;align-items:center;gap:7px;font-family:var(--m);font-size:11px;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--paper);background:var(--accent);
+    text-decoration:none;padding:9px 14px;border-radius:2px}
+  .cta:hover{background:var(--accent-dk)}
+
+  .sec-h{font-family:var(--m);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);
+    margin:0;padding-bottom:9px;border-bottom:1px solid var(--rule)}
+  section{padding-block:44px 8px}
+
+  /* timeline */
+  .tl{list-style:none;margin:0;padding:0}
+  .exp{display:grid;grid-template-columns:var(--mk) minmax(0,1fr);gap:0 20px;position:relative;padding-block:28px}
+  .exp + .exp{border-top:1px solid var(--rule)}
+  .exp::before{content:"";position:absolute;left:calc(var(--mk)/2);top:calc(28px + var(--mk) + 6px);
+    bottom:-22px;width:1px;background:var(--rule-hi)}
+  .exp:last-child::before{display:none}
+  .mark{width:var(--mk);height:var(--mk);display:grid;place-items:center;border:1px solid var(--rule-hi);
+    border-radius:3px;background:var(--paper);font-family:var(--m);font-weight:500;font-size:10.5px;
+    letter-spacing:.04em;color:var(--ink);position:relative;z-index:1}
+  .exp-body{min-width:0}
+  .exp-top{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;justify-content:space-between}
+  .exp-top h3{margin:0;font-size:19px;line-height:1.3;letter-spacing:-.018em;color:var(--ink);font-weight:600;text-wrap:balance}
+  .when{font-family:var(--m);font-size:11.5px;color:var(--mute);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .org{margin:2px 0 0;font-size:14.5px;color:var(--body)}
+  .meta{margin:2px 0 0;font-size:13px;color:var(--mute)}
+  .roles{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:4px}
+  .roles li{display:flex;flex-wrap:wrap;gap:2px 12px;justify-content:space-between;font-size:14px;color:var(--body)}
+  .summary{margin:12px 0 0;max-width:66ch}
+  .exp-main{display:grid;grid-template-columns:minmax(0,1fr);gap:16px 22px}
+  .exp-main.has-photo{grid-template-columns:minmax(0,1fr) 220px}
+  .me{margin:0;width:100%;max-width:100%;aspect-ratio:3/4;border:1px solid var(--rule);border-radius:3px;
+    overflow:hidden;background:var(--paper);display:grid;place-items:center}
+  .me{position:relative}
+  .me img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .me.ph{border-style:dashed;border-color:var(--rule-hi);padding:12px;text-align:center}
+
+  .strip{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .strip .th{width:76px;height:76px;max-width:100%;border:1px solid var(--rule);border-radius:2px;background:var(--paper);
+    overflow:hidden;display:grid;place-items:center}
+  .strip .th{position:relative}
+  .strip .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+  .strip .th.ph{background:var(--slot);border-style:dashed;border-color:var(--rule-hi)}
+
+  .toggle{margin-top:16px;display:inline-flex;align-items:center;gap:8px;background:none;border:1px solid var(--rule-hi);
+    border-radius:2px;padding:7px 12px;font-family:var(--m);font-size:11px;letter-spacing:.07em;text-transform:uppercase;
+    color:var(--ink);cursor:pointer}
+  .toggle:hover{border-color:var(--accent);color:var(--accent)}
+  .toggle .chev{width:9px;height:9px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+    transform:rotate(45deg) translate(-2px,-2px);transition:transform .18s ease}
+  .toggle[aria-expanded="true"] .chev{transform:rotate(225deg) translate(-1px,-1px)}
+
+  /* project cards */
+  .panel{margin-top:18px}
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .card{border:1px solid var(--rule);border-radius:3px;background:var(--paper);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+  .card .img{aspect-ratio:4/3;max-width:100%;background:var(--paper);border-bottom:1px solid var(--rule);display:grid;place-items:center;overflow:hidden}
+  .card .img{position:relative}
+  .card .img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+  .ph{background:var(--slot)}
+  .card .img.ph{border-bottom-style:dashed;border-bottom-color:var(--rule-hi);padding:12px;text-align:center}
+  .ph-lb{font-family:var(--m);font-size:10px;line-height:1.5;color:var(--mute);word-break:break-all}
+  .ph-lb b{display:block;font-weight:500;color:var(--rule-hi);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+  .cbody{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .ctop{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;justify-content:space-between}
+  .card h4{margin:0;font-size:16px;line-height:1.3;letter-spacing:-.012em;color:var(--ink);font-weight:600;text-wrap:balance}
+  .card .ctx{font-family:var(--m);font-size:10.5px;color:var(--mute);letter-spacing:.02em}
+  .card p{margin:0;font-size:14px;line-height:1.55}
+  .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:4px}
+  .tag{font-family:var(--m);font-size:10.5px;color:var(--body);background:var(--slot);padding:2px 7px;border-radius:2px}
+  .broke{border-left:2px solid var(--ink);padding:2px 0 2px 12px}
+  .broke .k{display:block;font-family:var(--m);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-bottom:3px}
+  .needs{font-family:var(--m);font-size:10.5px;line-height:1.5;color:var(--warn);background:var(--warn-soft);padding:6px 8px;border-radius:2px}
+  .card.wide{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+  .card.wide .img{aspect-ratio:1/1;align-self:start;border-bottom:0;border-right:1px solid var(--rule)}
+  /* carousel: several images in one card slot */
+  .img.car{position:relative;display:block}
+  .car-track{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+  .car-track::-webkit-scrollbar{display:none}
+  .slide{flex:0 0 100%;height:100%;scroll-snap-align:start;display:grid;place-items:center;overflow:hidden;padding:0;position:relative}
+  .slide img,.slide video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+  .slide.ph{padding:12px;text-align:center}
+  .car-dots{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:6px;pointer-events:none}
+  .car-dots{width:max-content;margin:auto;left:0;right:0;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.85)}
+  .car-dots span{width:6px;height:6px;border-radius:50%;background:var(--rule-hi)}
+  .car-dots span.on{background:var(--ink)}
+  .car-btn{position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;
+    border:1px solid var(--rule-hi);background:var(--paper);color:var(--ink);cursor:pointer;display:grid;place-items:center;
+    opacity:0;transition:opacity .15s ease;padding:0}
+  .car-btn.prev{left:8px}.car-btn.next{right:8px}
+  .car-btn::before{content:"";width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor}
+  .car-btn.prev::before{transform:translateX(2px) rotate(135deg)}
+  .car-btn.next::before{transform:translateX(-2px) rotate(-45deg)}
+  .img.car:hover .car-btn,.car-btn:focus-visible{opacity:1}
+  @media (hover:none){.car-btn{display:none}}
+  .card.wide .img.ph{border-right-style:dashed;border-right-color:var(--rule-hi)}
+  .card.textonly .cbody{padding-top:16px}
+  .card.wide.textonly{display:flex}
+  .card.textonly{grid-column:1 / -1}
+
+  /* background */
+  .bg-grid{display:grid;gap:26px;margin-top:22px}
+  .bg-row{display:grid;grid-template-columns:150px minmax(0,1fr);gap:6px 20px}
+  .bg-row dt{font-family:var(--m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+  .bg-row dd{margin:0;max-width:66ch}
+  .bg-item + .bg-item{margin-top:12px}
+  .bg-item .h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 12px;color:var(--ink);font-weight:600;font-size:15px}
+  .bg-item p{margin:2px 0 0;font-size:14px}
+  .cert-shots{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .cs{width:104px;height:104px;max-width:100%;border:1px solid var(--rule);border-radius:2px;overflow:hidden;
+    display:grid;place-items:center;background:var(--paper)}
+  .cs{position:relative}
+  .cs img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .cs.ph{border-style:dashed;border-color:var(--rule-hi)}
+  .skills{margin:0;display:grid;grid-template-columns:120px minmax(0,1fr);gap:8px 18px;font-size:14px}
+  .skills dt{font-family:var(--m);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);padding-top:2px}
+  .skills dd{margin:0}
+  footer{padding-block:48px 64px;font-family:var(--m);font-size:11px;color:var(--mute)}
+
+  @media (max-width:640px){
+    :root{--mk:40px}
+    .exp{gap:0 14px}
+    .mark{font-size:9px}
+    .grid{grid-template-columns:minmax(0,1fr)}
+    .card.wide{grid-template-columns:minmax(0,1fr)}
+    .card.wide .img{aspect-ratio:4/3;align-self:auto;border-right:0;border-bottom:1px solid var(--rule)}
+    .card.wide .img.ph{border-bottom-style:dashed;border-bottom-color:var(--rule-hi)}
+    .bg-row{grid-template-columns:minmax(0,1fr)}
+    .skills{grid-template-columns:minmax(0,1fr);gap:2px 0}
+    .skills dd{margin-bottom:8px}
+    .strip .th{width:60px;height:60px}
+    .exp-main.has-photo{grid-template-columns:minmax(0,1fr)}
+    .me{max-width:260px}
+  }
+  @media (prefers-reduced-motion:reduce){.toggle .chev,.car-btn{transition:none}.car-track{scroll-behavior:auto}}
+  /* section nav: sticky bar on narrow screens, floating labels at the right edge on wide ones */
+  #nav{display:flex;gap:0;overflow-x:auto;position:sticky;top:env(safe-area-inset-top,0px);z-index:10;
+    background:var(--paper);border-bottom:1px solid var(--rule);max-width:100%;scrollbar-width:none;
+    padding-inline:max(calc((100% - 880px)/2), clamp(16px,4vw,32px))}
+  #nav::-webkit-scrollbar{display:none}
+  #nav a{font-family:var(--m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);
+    text-decoration:none;padding:11px 14px 9px;white-space:nowrap;border-bottom:2px solid transparent}
+  #nav a:first-child{padding-left:0}
+  #nav a.on{color:var(--accent);border-bottom-color:var(--accent)}
+  #nav a::before{display:none}
+  .exp,#background{scroll-margin-top:52px}
+  @media (min-width:1200px){
+    #nav{position:fixed;top:50%;right:clamp(18px,2.6vw,38px);left:auto;transform:translateY(-50%);width:auto;
+      flex-direction:column;align-items:flex-end;overflow:visible;background:none;border-bottom:0;
+      padding-inline:0;gap:7px;z-index:5}
+    #nav a{display:flex;flex-direction:row-reverse;align-items:center;gap:7px;padding:0;border-bottom:0;
+      font-size:9.5px;letter-spacing:.13em;color:var(--ink);opacity:.18;transition:opacity .3s ease,color .3s ease}
+    #nav a:first-child{padding-left:0}
+    #nav a::before{display:block;content:"";width:11px;height:1px;background:currentColor;
+      transform:scaleX(.3);transform-origin:right;transition:transform .3s ease}
+    #nav a:hover{opacity:.5}
+    #nav a.on{opacity:1;color:var(--accent);border-bottom-color:transparent}
+    #nav a.on::before{transform:scaleX(1)}
+    .exp,#background{scroll-margin-top:24px}
+  }
+  @media (prefers-reduced-motion:reduce){#nav a,#nav a::before{transition:none}}
+
+</style>
+</head>
+<body>
+
+<nav id="nav" aria-label="Sections">
+  <a href="#mcml" class="on">MCML</a>
+  <a href="#utfr">UTFR</a>
+  <a href="#personal">Projects</a>
+  <a href="#coursework">Coursework</a>
+  <a href="#background">Background</a>
+</nav>
+
+<div class="draft-bar" id="draftBar" hidden>Draft view. Gray boxes show the file name each image needs in that project's 04_selects folder. Amber notes are missing info. Both disappear when DRAFT is set to false.</div>
+
+<div class="shell">
+  <header class="mast">
+    <h1>Seongjin Kim</h1>
+    <div class="ko">김성진</div>
+    <p class="who">Mechanical Engineering, University of Toronto · Toronto, ON</p>
+    <p class="lede">I bring broken machines back up and design the parts that go in them. Motion control, additive manufacturing, and the CAD in between.</p>
+    <span class="avail">Available for PEY Co-op · 12–16 months · 2027–2028</span>
+    <div class="links">
+      <a class="cta" href="https://linkedin.com/in/seongjinkim0820">LinkedIn</a>
+      <span class="txt">seoj.kim@mail.utoronto.ca</span>
+      
+    </div>
+  </header>
+
+  <section aria-labelledby="exp-h">
+    <h2 class="sec-h" id="exp-h">Experience</h2>
+    <ol class="tl" id="timeline"></ol>
+  </section>
+
+  <section id="background" aria-labelledby="bg-h">
+    <h2 class="sec-h" id="bg-h">Background</h2>
+    <div class="bg-grid">
+      <dl class="bg-row">
+        <dt>Education</dt>
+        <dd>
+          <div class="bg-item">
+            <div class="h"><span>University of Toronto</span><span class="when">Sep 2024 – Apr 2029 (expected)</span></div>
+            <p>B.A.Sc., Mechanical Engineering, 2T8 + PEY Co-op. Cumulative GPA 3.58/4.0. Dean's Honour List: Fall 2024, Winter 2025, Winter 2026.</p>
+            <p>Minors in progress: AI Engineering, and Robotics &amp; Mechatronics.</p>
+          </div>
+        </dd>
+      </dl>
+      <dl class="bg-row">
+        <dt>Certifications</dt>
+        <dd>
+          <div class="bg-item">
+            <div class="h"><span>Certified CATIA Mechanical &amp; Shape Designer, Associate</span><span class="when">Sep 2026</span></div>
+            <p>Dassault Systèmes. <a href="https://credly.com/badges/c9266108-b9e3-470c-9e3a-7bf17a9f7fa9">Verified badge</a></p>
+          </div>
+          <div class="bg-item">
+            <div class="h"><span>Basic Machining, George Brown College</span><span class="when">Feb 2026</span></div>
+            <p>Two-day lathe and milling course, completed by machining a working single-cylinder pneumatic engine. Final grade 100%.</p>
+            <div class="cert-shots" data-folder="13_george-brown-machining">
+              <div class="cs" data-img="gb_lathe" data-alt="Turning on the manual lathe"></div>
+              <div class="cs" data-img="gb_mill" data-alt="Milling in a Kurt vise"></div>
+              <div class="cs" data-img="gb_engine" data-alt="The finished pneumatic engine"></div>
+            </div>
+          </div>
+          <div class="bg-item">
+            <div class="h"><span>SMAW Welding Level 1</span><span class="when">Aug 2024</span></div>
+            <p>AAA Canadian Welding Academy. Two-week course.</p>
+          </div>
+        </dd>
+      </dl>
+      <dl class="bg-row">
+        <dt>Skills</dt>
+        <dd>
+          <dl class="skills">
+            <dt>CAD</dt><dd>CATIA / 3DEXPERIENCE (certified Associate), SolidWorks, Fusion 360</dd>
+            <dt>Motion control</dt><dd>Klipper, TMC5160 SPI stepper drivers, StallGuard2 homing, ESP32, servo drivers</dd>
+            <dt>Manufacturing</dt><dd>Manual lathe and mill, SMAW, FDM printing, pellet extrusion, sheet metal bending</dd>
+            <dt>Electronics</dt><dd>Soldering, protoboard assembly, power supply design, brownout diagnosis</dd>
+            <dt>Programming</dt><dd>Arduino (C++), Python for engineering calculation, MATLAB (numerical methods coursework)</dd>
+            <dt>Languages</dt><dd>Korean (native), English (fluent)</dd>
+          </dl>
+        </dd>
+      </dl>
+    </div>
+  </section>
+
+  <footer>Seongjin Kim · Toronto, ON</footer>
+</div>
+
+<script>
+/* ============================================================
+   DRAFT = true   shows image slots with the file name they need,
+                  plus amber notes for missing info.
+   DRAFT = false  hides anything missing. Flip before going live.
+   ============================================================ */
+var DRAFT = false;
+var IMG_ROOT = "01_projects/";   // site reads each project's 05_web folder
+
+var EXPERIENCE = [
+  {
+    id: "mcml", mark: "MCML",
+    title: "Research Assistant",
+    org: "Multifunctional Composites Manufacturing Laboratory (MCML), University of Toronto",
+    meta: "Dept. of Mechanical & Industrial Engineering · Supervisor: Prof. Patrick Lee",
+    when: "May 2026 – Present",
+    roles: [["Work-Study Research Assistant", "Fall 2026 – Winter 2027"], ["Volunteer", "May – Aug 2026"]],
+    summary: "Revived an abandoned large-format pellet-fed 3D printer that two prior capstone teams had left non-functional, working from an outdated manual with no BOM. Took it to first print and raised build height from 150 mm to 315 mm.",
+    folder: "01_mcml-pellet-printer",
+    photo: { img: "mcml_me-in-lab", alt: "Seongjin in the MCML lab" },
+    projects: [
+      { t: "Control stack rebuild", img: "mcml_control-stack", wide: true,
+        p: "The motors wouldn't run, and the previous team had written \"fried\" next to the first driver slot in the manual. Replaced the control stack with a BTT Manta M8P V2.0 and CB1, configured Klipper with generic_cartesian kinematics, and commissioned five TMC5160 Pro stepper drivers in SPI mode.",
+        broke: "The old board, before it was replaced. The manual had + and − swapped, and a power-up on the reversed polarity smoked the board at that same driver slot. Moving the motors to other ports didn't help. Then, probing the back of the board with a multimeter, I shorted what was probably a high-voltage pin to a communication pin, which finished it off. That's how we ended up buying the new board. Next time, with a history like that (the \"fried\" note and the smoke), I'd call the board dead right away and replace it instead of debugging it live.",
+        tags: ["Klipper", "TMC5160 · SPI", "Manta M8P"] },
+      { t: "Homing: sensorless to endstops", img: "mcml_endstops",
+        p: "Brought up sensorless StallGuard2 homing, then traced inconsistent Z-axis trigger sensitivity to the belt drive. Moved all three axes to physical endstops: selected the sensors, designed the three endstop mounts in SolidWorks, and configured the trigger and homing sequence. Printed the mounts on personal equipment for next-day installation.",
+        tags: ["StallGuard2", "Klipper", "SolidWorks"] },
+      { t: "Z-stage redesign and bearing mounts", img: "mcml_z-stage",
+        p: "Extended the Z travel to raise build height from 150 mm to 315 mm (2.1x), for a usable build volume of 400 × 400 × 315 mm, designing two new Z-axis mounts for it. Also designed the two Y-axis ball bearing mounts the machine was missing. All four were modelled in SolidWorks and printed on personal equipment for next-day installation. The machine CAD shown is the earlier team's model; the Y-axis bearing mounts and the extended Z travel in it are mine.",
+        tags: ["SolidWorks", "150 → 315 mm", "FDM"] },
+      { t: "First print", img: "mcml_first-print",
+        p: "Extended and soldered the thermistor and heater leads on a never-run extruder, then brought it to its first print: a 3DBenchy and calibration cube from roughly 40 g of hand-chopped PLA, confirming the full pellet-to-part path.",
+        tags: ["Pellet extrusion"] },
+      { t: "Feedstock DSC", img: null,
+        p: "Ran DSC on an unlabelled polymer feedstock. The thermal profile indicated PP or modified PLA rather than the stated material.",
+        tags: ["DSC"] }
+    ]
+  },
+  {
+    id: "utfr", mark: "UTFR",
+    title: "University of Toronto Formula Racing",
+    org: "Formula SAE team",
+    when: "Sep 2025 – Present",
+    roles: [["Cooling loop, Aero sub-team", "Jun 2026 – Present"], ["Drivetrain sub-team, UT26", "Sep 2025 – Jun 2026"]],
+    summary: "Designed a transparent, resin-printed cooling jacket in CATIA and built a test loop around it so the water flow inside could be seen. Also machined planet shafts for the UT26 car's planetary gearboxes on a manual lathe, and helped assemble the gearbox corners and drivetrain cooling loop. Now senior member on cooling loop after drivetrain merged into aero and chassis, with no sub-team lead, and modelling the car's full cooling loop in CAD.",
+    folder: "11_utfr-ut26-drivetrain",
+    photo: { img: "utfr_ut26-unveiling", alt: "Seongjin at the UT26 unveiling" },
+    projects: [
+      { t: "Transparent cooling jacket", folder: "15_utfr-cooling-jacket", ctx: "Oct 2026", imgs: ["jacket_hero", "jacket_02_flow"],
+        p: "Built a transparent cooling jacket to see how the water flows inside, while the team works out why the motor was overheating. Designed it in CATIA, resin 3D printed it, sanded and clear-coated it, and sealed it with silicone. Built a cooling loop around it with a pump running about 11 L/min, then tested it with the team. One pressure sensor was broken, so the test was visual, using glitter as a tracer.",
+        finding: "No air pockets, which was good. But as soon as the glitter entered the channel it split between the first loop and the bottom loop, because the two are connected. That causes backflow and turbulence in the first loop, so the channel layout needs to change. Analyzing the bench data in Python showed about 200 W removed at a 60 °C ΔT, against 377 W needed. The team is now setting up a simulation to replicate the test.",
+        tags: ["CATIA", "Resin printing", "Flow visualization", "Cooling loop"] },
+      { t: "Car cooling loop CAD", ctx: "In progress", folder: "02_utfr-cooling-loop", img: null,
+        p: "Modelling the full cooling loop on the car: pump, radiator, hard lines and soft lines. Next up are the pressure sensor mounts and the filler neck.",
+        tags: ["CAD", "Packaging", "Cooling"] },
+      { t: "Planet shafts and gearbox corners", imgs: ["utfr_planet-shafts", "utfr_corner-assembly"],
+        p: "Machined 3 of the 12 planet shafts for the planetary gearboxes, plus part of a fourth, on a manual lathe from 4340 alloy steel to the team's drawings. The tolerances were tight, so each one took a while, and heat treatment was outsourced. Then helped assemble the gearbox corners, pressing the planet shafts and gears for a few of them. The shafts are installed on the UT26 vehicle.",
+        tags: ["Manual lathe", "4340 steel", "Press fits"] },
+      { t: "Assembly and testing support", img: null,
+        p: "Helped assemble the drivetrain cooling loop, including a sheet metal bend on a fan mount for my lead. Supported UT26 testing with cooling loop bleeding and gear oil service, and contributed component cost data (materials, labour, processes) to the team's FSAE Cost Report.",
+        tags: ["Assembly", "Testing", "FSAE Cost Report"] }
+    ]
+  },
+  {
+    id: "personal", mark: "SK",
+    title: "Personal Projects",
+    org: "Independent and freelance",
+    when: "Ongoing",
+    summary: "Things I design and build around my own needs, plus one commissioned client build. Most of it is designed for 3D printing.",
+    projects: [
+      { t: "Motorized coffee grinder", ctx: "Aug 2026", folder: "05_coffee-grinder", imgs: ["grinder_cad", "grinder_hero"], wide: true,
+        p: "Motorized a manual coffee grinder with a motor and electronics salvaged from a massage gun. A single 40:8 stage barely moved it, so I added a second stage and compounded the two for 25:1, the maximum ratio a two-stage configuration gave me. Developed across five iterations, with a generative-design shaft holder to carry the output torque.",
+        broke: "The pinion sheared. I traced it to its set screw, which pushed the gear past the end of the motor shaft, so the unsupported top sheared along the layer lines. I switched to a herringbone pair, whose opposed helices keep the gears axially located without a set screw.",
+        tags: ["Gear train", "Generative design", "Failure analysis"] },
+      { t: "The Columbine", ctx: "Freelance · Jun – Aug 2026", folder: "08_columbine-scale-model", imgs: ["columbine_cad", "columbine_lights.mp4", "columbine_hero", "columbine_06_electronics", "columbine_05_cutaway", "columbine_03_interior"],
+        p: "Commissioned 1:51 scale model of a corner townhouse, from client drawings to finished build in seven weeks. Removable stackable floors, 67 facade panels batch-textured with a custom web tool, and a hand-soldered 54-LED lighting system with ESP32 firmware and wireless browser control.",
+        tags: ["Fusion 360", "ESP32", "Soldering"] },
+      { t: "Teleoperated robot arm pair", ctx: "2025 – 2026", folder: "09_teleop-arm-pair", imgs: ["teleop_hero", "teleop_02_photo"],
+        p: "Two kinematically matched 4-DOF arms, a potentiometer input arm and a micro-servo follower, running leader-follower teleoperation on Arduino with a PCA9685 servo driver. Fixed servo brownouts with a dedicated 5 V 2 A supply and overshoot by constraining the input to map().",
+        tags: ["Arduino", "PCA9685", "Servos"] },
+      { t: "Motorized jet engine model", folder: "06_jet-engine-model", imgs: ["jet-engine_cad", "jet-engine_hero"],
+        p: "Motorized a jet engine model printed from a MakerWorld STL. The engine itself isn't my design; I added the motor shaft, motor mount, and gearbox, and built the electrical control board, a four-speed panel of buttons, switches, and resistors.",
+        tags: ["Motor mount", "Gearbox", "Electronics"] },
+      { t: "Jet engine desk fan", folder: "14_jet-engine-desk-fan", imgs: ["fan_cad", "fan_hero"],
+        p: "Turned a handheld fan into a desktop fan styled as a jet engine. Designed everything around the fan: the shroud, the cone at the back, and the mount.",
+        tags: ["Fusion 360", "Design for printing"] },
+      { t: "Household prints", folder: "12_household-prints", img: "household_hero",
+        p: "30+ functional items designed around my own needs, including a monitor stand, an earbuds charging station, a filament spool holder, and a Picatinny-rail-style hairdryer holder.",
+        tags: ["Design for printing"] },
+      { t: "Engineered Strength", ctx: "2026", img: null,
+        p: "Android training app with RPE-based block programming and automated 1RM and strength-score calculation, in personal daily use.",
+        tags: ["Android"] }
+    ]
+  },
+  {
+    id: "coursework", mark: "UofT",
+    title: "Course Design Projects",
+    org: "University of Toronto, Faculty of Applied Science & Engineering",
+    when: "2025",
+    summary: "Team design projects from core courses, from client-sponsored concept selection to mechanism design.",
+    projects: [
+      { t: "Robotic camera arm, shoulder joint", ctx: "MIE243 · Fall 2025 · team of 4", folder: "04_mie243-camera-arm", imgs: ["camera-arm_hero", "camera-arm_02_full"],
+        p: "Low-cost robotic camera arm for hobbyist cinematographers. I owned the shoulder joint and specified a differential drive so two smaller, cheaper motors share the lifting load and drive both lift and rotation, instead of sizing one high-torque motor. Calculated joint torque in Python and designed the belt-pulley stepper actuation in SolidWorks.",
+        tags: ["SolidWorks", "Python", "Differential drive"] },
+      { t: "Adaptive mat placement system", ctx: "ESP II · Winter 2025 · team", folder: "07_esp2-mat-indicator", imgs: ["mat-indicator_hero", "mat-indicator_02_site", "mat-indicator_03_storage", "mat-indicator_04_breadboard", "mat-indicator_05_app"],
+        p: "Client-sponsored project for Oxygen Yoga & Fitness, replacing fixed mat markers that couldn't adapt to class size. Generated 57+ concepts, narrowed to three, and selected a Digital Mat Indicator with a Pugh matrix. I built the LED prototype and validated its mat spacing against the model.",
+        tags: ["Pugh matrix", "Prototype"] },
+      { t: "3D printed gearbox", ctx: "MIE243 · Fall 2025 · team", folder: "10_printed-gearbox", imgs: ["gearbox_hero", "gearbox_test.mp4", "gearbox_02_carrier"],
+        p: "Lab project for a mechanical design course. On a team, I designed the gearbox and 3D printed it, then it was tested by driving the input with a drill.",
+        tags: ["Gear design", "3D printing", "Testing"] }
+    ]
+  }
+];
+
+(function(){
+  var tl = document.getElementById("timeline");
+  if (DRAFT) document.getElementById("draftBar").hidden = false;
+
+  function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+
+  function placeholder(box, folder, name){
+    box.classList.add("ph");
+    box.textContent = "";
+    var lb = el("div","ph-lb");
+    lb.appendChild(el("b",null,"image"));
+    lb.appendChild(document.createTextNode(folder + "/04_selects/" + name + ".png"));
+    box.appendChild(lb);
+  }
+
+  // box: container; on load failure it becomes a labelled slot (draft) or is removed (live)
+  function image(box, folder, name, thumb, onGone){
+    var img = new Image();
+    img.alt = "";
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.onerror = function(){
+      if (DRAFT) { if (thumb) { box.classList.add("ph"); box.textContent=""; } else placeholder(box, folder, name); }
+      else { box.remove(); if (onGone) onGone(); }
+    };
+    img.src = IMG_ROOT + folder + "/05_web/" + name + (thumb ? "_thumb" : "") + ".webp";
+    box.appendChild(img);
+  }
+
+  var REDUCE = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // short silent loop; plays on its own unless the viewer prefers reduced motion
+  function video(box, folder, name, onGone){
+    var base = IMG_ROOT + folder + "/05_web/" + name;
+    var v = document.createElement("video");
+    v.muted = true; v.loop = true; v.playsInline = true;
+    v.setAttribute("muted",""); v.setAttribute("playsinline","");
+    v.preload = "metadata";
+    v.poster = base.replace(/\.mp4$/i, "_poster.webp");
+    if (REDUCE) v.controls = true; else v.autoplay = true;
+    // WebM first (plays in every modern browser), MP4 as the fallback
+    var sources = [[base.replace(/\.mp4$/i, ".webm"), "video/webm"], [base, "video/mp4"]];
+    sources.forEach(function(sv, i){
+      var so = document.createElement("source"); so.src = sv[0]; so.type = sv[1];
+      if (i === sources.length - 1) so.onerror = function(){
+        if (DRAFT) placeholder(box, folder, name.replace(/\.mp4$/i,""));
+        else { box.remove(); if (onGone) onGone(); }
+      };
+      v.appendChild(so);
+    });
+    box.appendChild(v);
+  }
+  function isVideo(n){ return /\.mp4$/i.test(n); }
+
+  function names(p){ return p.imgs || (p.img ? [p.img] : []); }
+
+  // several images in one slot: swipe on phones, arrows on hover, dots show position
+  function carousel(box, folder, list){
+    box.classList.add("car");
+    var track = el("div","car-track"), dots = el("div","car-dots");
+    var prev = el("button","car-btn prev"), next = el("button","car-btn next");
+    prev.type = next.type = "button";
+    prev.setAttribute("aria-label","Previous image"); next.setAttribute("aria-label","Next image");
+    box.appendChild(track); box.appendChild(dots); box.appendChild(prev); box.appendChild(next);
+    function refresh(){
+      var n = track.children.length;
+      if (!n){ box.remove(); return; }
+      dots.innerHTML = "";
+      for (var i=0;i<n;i++) dots.appendChild(el("span"));
+      var single = n < 2; dots.hidden = single; prev.hidden = single; next.hidden = single;
+      mark();
+    }
+    function mark(){
+      var w = track.clientWidth || 1, i = Math.round(track.scrollLeft / w);
+      [].forEach.call(dots.children, function(d,k){ d.classList.toggle("on", k===i); });
+    }
+    list.forEach(function(name){
+      var sl = el("div","slide"); track.appendChild(sl);
+      if (isVideo(name)) video(sl, folder, name, refresh); else image(sl, folder, name, false, refresh);
+    });
+    track.addEventListener("scroll", function(){ window.requestAnimationFrame(mark); }, {passive:true});
+    prev.addEventListener("click", function(){ track.scrollBy({left:-track.clientWidth, behavior:"smooth"}); });
+    next.addEventListener("click", function(){ track.scrollBy({left: track.clientWidth, behavior:"smooth"}); });
+    refresh();
+  }
+
+  EXPERIENCE.forEach(function(x){
+    var projects = x.projects.filter(function(p){ return DRAFT || !p.draft; });
+    // cards without visuals go last and run full width, so they never sit beside a tall image card
+    projects = projects.filter(function(p){ return names(p).length; }).concat(projects.filter(function(p){ return !names(p).length; }));
+    var li = el("li","exp"); li.id = x.id;
+    li.appendChild(el("div","mark",x.mark));
+    var b = el("div","exp-body");
+
+    var main = el("div","exp-main");
+    var txt = el("div");
+    main.appendChild(txt);
+    var top = el("div","exp-top");
+    top.appendChild(el("h3",null,x.title));
+    top.appendChild(el("span","when",x.when));
+    txt.appendChild(top);
+    txt.appendChild(el("p","org",x.org));
+    if (x.meta) txt.appendChild(el("p","meta",x.meta));
+    if (x.roles){
+      var ul = el("ul","roles");
+      x.roles.forEach(function(r){ var i=el("li"); i.appendChild(el("span",null,r[0])); i.appendChild(el("span","when",r[1])); ul.appendChild(i); });
+      txt.appendChild(ul);
+    }
+    txt.appendChild(el("p","summary",x.summary));
+    if (x.photo){
+      var fig = el("figure","me");
+      main.classList.add("has-photo");
+      image(fig, x.folder, x.photo.img, false, function(){ main.classList.remove("has-photo"); });
+      fig.querySelector("img") && (fig.querySelector("img").alt = x.photo.alt);
+      main.appendChild(fig);
+    }
+    b.appendChild(main);
+
+    // thumbnail strip: first four projects that have an image
+    var strip = el("div","strip");
+    projects.filter(function(p){ return names(p).length; }).slice(0,4).forEach(function(p){
+      var th = el("div","th");
+      image(th, p.folder || x.folder, names(p).filter(function(n){ return !isVideo(n); })[0], true, function(){ if(!strip.children.length) strip.remove(); });
+      strip.appendChild(th);
+    });
+    if (strip.children.length) b.appendChild(strip);
+
+    var btn = el("button","toggle");
+    btn.type = "button";
+    btn.setAttribute("aria-expanded","false");
+    btn.setAttribute("aria-controls", x.id + "-panel");
+    var lbl = el("span",null,"");
+    var n = projects.length, word = n === 1 ? " project" : " projects";
+    lbl.textContent = "Show " + n + word;
+    btn.appendChild(lbl);
+    btn.appendChild(el("span","chev"));
+    b.appendChild(btn);
+
+    var panel = el("div","panel"); panel.id = x.id + "-panel"; panel.hidden = true;
+    var grid = el("div","grid");
+    // if the normal cards leave one alone in the last row, let it span the full width
+    var narrow = projects.filter(function(p){ return !p.wide && names(p).length; });
+    var lastAlone = narrow.length % 2 === 1 ? narrow[narrow.length-1] : null;
+    projects.forEach(function(p){
+      var list = names(p);
+      var c = el("article","card" + (p.wide || p === lastAlone ? " wide" : "") + (list.length ? "" : " textonly"));
+      if (list.length > 1){ var cb0 = el("div","img"); c.appendChild(cb0); carousel(cb0, p.folder || x.folder, list); }
+      else if (list.length){ var box = el("div","img"); image(box, p.folder || x.folder, list[0], false); c.appendChild(box); }
+      var cb = el("div","cbody");
+      var ct = el("div","ctop"); ct.appendChild(el("h4",null,p.t)); if (p.ctx) ct.appendChild(el("span","ctx",p.ctx)); cb.appendChild(ct);
+      if (p.p) cb.appendChild(el("p",null,p.p));
+      if (p.finding){ var fd=el("div","broke"); fd.appendChild(el("span","k","What the test showed")); fd.appendChild(el("p",null,p.finding)); cb.appendChild(fd); }
+      if (p.broke){ var br=el("div","broke"); br.appendChild(el("span","k","What broke")); br.appendChild(el("p",null,p.broke)); cb.appendChild(br); }
+      if (DRAFT && p.needs) cb.appendChild(el("div","needs","Needs: " + p.needs));
+      if (p.tags && p.tags.length){ var tg=el("div","tags"); p.tags.forEach(function(t){ tg.appendChild(el("span","tag",t)); }); cb.appendChild(tg); }
+      c.appendChild(cb);
+      grid.appendChild(c);
+    });
+    panel.appendChild(grid);
+    b.appendChild(panel);
+
+    function set(open){
+      panel.hidden = !open;
+      if (open && !REDUCE) [].forEach.call(panel.querySelectorAll("video"), function(v){ var p = v.play(); if (p && p.catch) p.catch(function(){}); });
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      lbl.textContent = open ? "Hide projects" : "Show " + n + word;
+    }
+    btn.addEventListener("click", function(){ set(panel.hidden); });
+    li._open = set;
+
+    li.appendChild(b);
+    tl.appendChild(li);
+  });
+
+  // photo strips in static sections (e.g. the machining course)
+  [].forEach.call(document.querySelectorAll(".cert-shots"), function(row){
+    var folder = row.getAttribute("data-folder");
+    [].forEach.call(row.querySelectorAll(".cs"), function(box){
+      image(box, folder, box.getAttribute("data-img"), true, function(){ if(!row.querySelector(".cs")) row.remove(); });
+      var im = box.querySelector("img"); if (im) im.alt = box.getAttribute("data-alt") || "";
+    });
+  });
+
+  // section nav: highlight whichever section is in view
+  var navLinks = [].slice.call(document.querySelectorAll("#nav a")),
+      navSecs = navLinks.map(function(a){ return document.getElementById(a.getAttribute("href").slice(1)); });
+  function markNav(id){ navLinks.forEach(function(a){ a.classList.toggle("on", a.getAttribute("href") === "#" + id); }); }
+  if ("IntersectionObserver" in window){
+    var seenNav = {};
+    var navIO = new IntersectionObserver(function(es){
+      es.forEach(function(e){ seenNav[e.target.id] = e.isIntersecting ? e.intersectionRatio : 0; });
+      var best = null, bv = 0;
+      navSecs.forEach(function(sec){ if (!sec) return; var v = seenNav[sec.id] || 0; if (v > bv){ bv = v; best = sec.id; } });
+      if (!best){ for (var k = navSecs.length - 1; k >= 0; k--){ if (navSecs[k] && navSecs[k].getBoundingClientRect().top < 120){ best = navSecs[k].id; break; } } }
+      if (best) markNav(best);
+    }, {rootMargin: "-10% 0px -55% 0px", threshold: [0, .05, .15, .35, .6, 1]});
+    navSecs.forEach(function(sec){ if (sec) navIO.observe(sec); });
+  }
+
+  // open a section from a link like  site/#mcml
+  var h = (location.hash || "").slice(1);
+  var target = h && document.getElementById(h);
+  if (target && target._open){ target._open(true); target.scrollIntoView(); }
+})();
+</script>
+
+</body>
+</html>
