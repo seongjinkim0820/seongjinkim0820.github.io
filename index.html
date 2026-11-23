@@ -3,91 +3,171 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Seongjin Kim, mechanical engineering at the University of Toronto. Motion control, additive manufacturing, CAD.">
-<style>html{color-scheme:light}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Seongjin Kim</title>
+<meta name="description" content="Seongjin Kim, mechanical engineering at the University of Toronto. Motion control, additive manufacturing, CAD.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://seongjinkim0820.github.io/">
+<meta property="og:title" content="Seongjin Kim">
+<meta property="og:description" content="Seongjin Kim, mechanical engineering at the University of Toronto. Motion control, additive manufacturing, CAD.">
+<meta property="og:image" content="https://seongjinkim0820.github.io/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230B63A5'/%3E%3Ctext x='16' y='21.5' text-anchor='middle' font-family='ui-monospace,Menlo,Consolas,monospace' font-size='13' font-weight='600' fill='%23fff'%3ESK%3C/text%3E%3C/svg%3E">
+<style>html{color-scheme:light}img{max-width:100%}[hidden]{display:none!important}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap">
+</head>
+<body>
+
 <style>
-  /* Single white theme on purpose: CAD captures are gray bodies with black edges on
-     transparent PNGs, and the site supplies the white (README, decisions locked). */
+  /* Layout: a project sheet. White paper, one blue. The work sits on pale drafting-stage
+     plates, each experience hangs off a ruled timeline, and figures are set in mono like
+     the fields of a drawing's title block.
+     Single white theme on purpose: CAD captures are transparent PNGs drawn for a white
+     ground (README, decisions locked). */
   :root{
-    --paper:#FFFFFF; --ink:#0F1317; --body:#2B3138; --mute:#6C747E;
-    --rule:#DFE3E8; --rule-hi:#BAC0C7; --slot:#F3F5F8;
-    --accent:#0B63A5; --accent-dk:#08507F; --accent-soft:#E8F0F7;
-    --warn:#8A5300; --warn-soft:#FFF3DD;
+    color-scheme:light;
+    --paper:#FFFFFF; --ink:#0E1216; --body:#2A3038; --mute:#626C7A;
+    --rule:#DCE1E7; --rule-hi:#B3BBC6; --stage:#F1F4F7;
+    --accent:#0B63A5; --accent-dk:#084C7E; --accent-soft:#E7EFF7;
+    --fail:#A63C17; --warn:#8A5300; --warn-soft:#FFF3DD;
+    --scrim:rgba(12,16,20,.95); --on-scrim:#F4F6F8;
     --f:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
     --m:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-    --mk:52px;
+    --mk:52px; --shell:1120px; --gut:clamp(16px,4vw,32px);
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--paper);color:var(--body);font-family:var(--f);
     font-size:15.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
   a{color:var(--accent)}
+  button{font:inherit;color:inherit}
+  img,video{display:block}
   a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-  .shell{max-width:880px;margin-inline:auto;padding-inline:clamp(16px,4vw,32px)}
+  .shell{max-width:var(--shell);margin-inline:auto;
+    padding-left:max(var(--gut),env(safe-area-inset-left,0px));
+    padding-right:max(var(--gut),env(safe-area-inset-right,0px))}
 
   .draft-bar{background:var(--warn-soft);color:var(--warn);font-family:var(--m);font-size:11.5px;
-    line-height:1.5;padding:8px clamp(16px,4vw,32px);text-align:center}
+    line-height:1.5;padding:8px var(--gut);text-align:center}
 
-  /* masthead */
-  .mast{padding-block:clamp(40px,7vw,72px) 8px}
-  .mast h1{margin:0;font-size:clamp(30px,4.6vw,42px);line-height:1.05;letter-spacing:-.035em;
-    font-weight:700;color:var(--ink)}
-  .mast .ko{font-family:var(--m);font-size:12.5px;color:var(--mute);letter-spacing:.06em;margin-top:6px}
-  .mast .who{margin:10px 0 0;font-size:14.5px;color:var(--mute)}
-  .mast .lede{margin:22px 0 0;font-size:clamp(17px,2.1vw,20px);line-height:1.45;color:var(--ink);
-    max-width:44ch;letter-spacing:-.012em;text-wrap:balance}
-  .avail{display:inline-block;margin-top:16px;font-family:var(--m);font-size:11px;letter-spacing:.07em;
+  /* ---------- masthead: who, then the work (CAD beside the built part) ---------- */
+  .mast{display:grid;grid-template-columns:minmax(0,1fr);gap:30px;align-items:center;
+    padding-block:clamp(30px,5vw,56px) 4px}
+  .mast-txt{min-width:0}
+  .mast h1{margin:0;font-size:clamp(34px,5.1vw,56px);line-height:1;font-weight:700;font-stretch:118%;
+    letter-spacing:-.028em;color:var(--ink)}
+  .mast .ko{font-family:var(--m);font-size:12.5px;color:var(--mute);letter-spacing:.06em;margin-top:10px}
+  .mast .who{margin:12px 0 0;font-size:14.5px;color:var(--mute)}
+  .mast .lede{margin:20px 0 0;font-size:clamp(18px,1.95vw,21px);line-height:1.42;color:var(--ink);
+    max-width:38ch;letter-spacing:-.012em;text-wrap:balance}
+  .avail{display:inline-block;margin-top:18px;font-family:var(--m);font-size:11px;letter-spacing:.07em;
     text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:4px 9px;border-radius:2px}
-  .links{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;margin-top:22px}
-  .links .txt{font-family:var(--m);font-size:12px;color:var(--mute);text-decoration:none}
-  .links a.txt:hover{color:var(--accent)}
+  .links{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:22px}
   .cta{display:inline-flex;align-items:center;gap:7px;font-family:var(--m);font-size:11px;
     letter-spacing:.07em;text-transform:uppercase;color:var(--paper);background:var(--accent);
     text-decoration:none;padding:9px 14px;border-radius:2px}
   .cta:hover{background:var(--accent-dk)}
+  .mail{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
+  .mail a{font-family:var(--m);font-size:12px;color:var(--body);text-decoration:none;overflow-wrap:anywhere}
+  .mail a:hover{color:var(--accent)}
+  .copy{font-family:var(--m);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);
+    background:none;border:1px solid var(--rule-hi);border-radius:2px;padding:2px 7px;cursor:pointer}
+  .copy:hover{color:var(--accent);border-color:var(--accent)}
 
-  .sec-h{font-family:var(--m);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);
-    margin:0;padding-bottom:9px;border-bottom:1px solid var(--rule)}
-  section{padding-block:44px 8px}
+  .db{margin:0;min-width:0}
+  .db-stage{position:relative;aspect-ratio:19/10;max-width:100%;background:var(--stage);border-radius:3px;
+    container-type:size;display:grid;place-items:center;overflow:hidden}
+  /* registration ticks in the four corners, as on a drawing sheet */
+  .db-stage::before{content:"";position:absolute;inset:6px;pointer-events:none;background:
+    linear-gradient(var(--rule-hi),var(--rule-hi)) left top/10px 1px no-repeat,
+    linear-gradient(var(--rule-hi),var(--rule-hi)) left top/1px 10px no-repeat,
+    linear-gradient(var(--rule-hi),var(--rule-hi)) right top/10px 1px no-repeat,
+    linear-gradient(var(--rule-hi),var(--rule-hi)) right top/1px 10px no-repeat,
+    linear-gradient(var(--rule-hi),var(--rule-hi)) left bottom/10px 1px no-repeat,
+    linear-gradient(var(--rule-hi),var(--rule-hi)) left bottom/1px 10px no-repeat,
+    linear-gradient(var(--rule-hi),var(--rule-hi)) right bottom/10px 1px no-repeat,
+    linear-gradient(var(--rule-hi),var(--rule-hi)) right bottom/1px 10px no-repeat}
+  .db-row{display:flex;gap:8px;width:calc(100% - 36px);
+    width:min(100cqw - 36px,(100cqh - 36px)*var(--sum,2.08));aspect-ratio:var(--sum,2.08);
+    transition:opacity .17s ease}
+  .db-row.out{opacity:0}
+  .db-pane{position:relative;flex:var(--ar,1.3333) 1 0%;min-width:0;height:100%;padding:0;border:0;
+    background:var(--paper);border-radius:2px;overflow:hidden;cursor:zoom-in}
+  .db-pane img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+  .db-pane.built img{object-fit:cover}
+  .db-lb{position:absolute;left:8px;bottom:8px;font-family:var(--m);font-size:10px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink);background:rgba(255,255,255,.9);padding:2px 6px;border-radius:2px}
+  .db-bar{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:2px 18px;
+    border-top:1px solid var(--rule);margin-top:12px}
+  .db-tabs{display:flex;flex-wrap:wrap;gap:0 18px;min-width:0}
+  .db-tab{font-family:var(--m);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);
+    background:none;border:0;border-top:2px solid transparent;margin-top:-1px;padding:8px 0 4px;
+    white-space:nowrap;cursor:pointer}
+  .db-tab:hover{color:var(--ink)}
+  .db-tab[aria-selected="true"]{color:var(--ink);border-top-color:var(--accent)}
+  .db-go{font-family:var(--m);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);
+    text-decoration:none;padding:9px 0 4px;white-space:nowrap}
+  .db-go:hover{text-decoration:underline}
+  @media (min-width:940px){
+    .mast{grid-template-columns:minmax(0,.8fr) minmax(0,1fr);gap:clamp(32px,4.4vw,60px)}
+  }
 
-  /* timeline */
+  /* ---------- sections ---------- */
+  section{padding-block:48px 8px}
+  .sec-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;
+    padding-bottom:9px;border-bottom:1px solid var(--rule)}
+  .sec-h{font-family:var(--m);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:0}
+  .all{font-family:var(--m);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);
+    background:none;border:0;padding:0;cursor:pointer}
+  .all:hover{color:var(--accent)}
+
+  /* ---------- timeline ---------- */
   .tl{list-style:none;margin:0;padding:0}
-  .exp{display:grid;grid-template-columns:var(--mk) minmax(0,1fr);gap:0 20px;position:relative;padding-block:28px}
+  .exp{display:grid;grid-template-columns:var(--mk) minmax(0,1fr);gap:0 22px;position:relative;padding-block:32px}
   .exp + .exp{border-top:1px solid var(--rule)}
-  .exp::before{content:"";position:absolute;left:calc(var(--mk)/2);top:calc(28px + var(--mk) + 6px);
-    bottom:-22px;width:1px;background:var(--rule-hi)}
+  .exp::before{content:"";position:absolute;left:calc(var(--mk)/2);top:calc(32px + var(--mk) + 6px);
+    bottom:-26px;width:1px;background:var(--rule-hi)}
   .exp:last-child::before{display:none}
   .mark{width:var(--mk);height:var(--mk);display:grid;place-items:center;border:1px solid var(--rule-hi);
     border-radius:3px;background:var(--paper);font-family:var(--m);font-weight:500;font-size:10.5px;
     letter-spacing:.04em;color:var(--ink);position:relative;z-index:1}
   .exp-body{min-width:0}
+  .exp-main{display:grid;grid-template-columns:minmax(0,1fr);gap:18px 36px;align-items:start}
+  .exp-main.has-photo{grid-template-columns:minmax(0,1fr) 216px}
   .exp-top{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;justify-content:space-between}
-  .exp-top h3{margin:0;font-size:19px;line-height:1.3;letter-spacing:-.018em;color:var(--ink);font-weight:600;text-wrap:balance}
+  .exp-top h3{margin:0;font-size:22px;line-height:1.22;font-weight:650;font-stretch:108%;
+    letter-spacing:-.02em;color:var(--ink);text-wrap:balance}
   .when{font-family:var(--m);font-size:11.5px;color:var(--mute);white-space:nowrap;font-variant-numeric:tabular-nums}
-  .org{margin:2px 0 0;font-size:14.5px;color:var(--body)}
+  .org{margin:3px 0 0;font-size:14.5px;color:var(--body)}
   .meta{margin:2px 0 0;font-size:13px;color:var(--mute)}
-  .roles{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:4px}
+  .roles{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:4px}
   .roles li{display:flex;flex-wrap:wrap;gap:2px 12px;justify-content:space-between;font-size:14px;color:var(--body)}
-  .summary{margin:12px 0 0;max-width:66ch}
-  .exp-main{display:grid;grid-template-columns:minmax(0,1fr);gap:16px 22px}
-  .exp-main.has-photo{grid-template-columns:minmax(0,1fr) 220px}
-  .me{margin:0;width:100%;max-width:100%;aspect-ratio:3/4;border:1px solid var(--rule);border-radius:3px;
-    overflow:hidden;background:var(--paper);display:grid;place-items:center}
-  .me{position:relative}
+  .summary{margin:14px 0 0;max-width:70ch}
+  .me{position:relative;margin:0;width:100%;max-width:100%;aspect-ratio:3/4;border-radius:3px;overflow:hidden;background:var(--stage)}
   .me img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .me.ph{border-style:dashed;border-color:var(--rule-hi);padding:12px;text-align:center}
 
-  .strip{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-  .strip .th{width:76px;height:76px;max-width:100%;border:1px solid var(--rule);border-radius:2px;background:var(--paper);
-    overflow:hidden;display:grid;place-items:center}
-  .strip .th{position:relative}
-  .strip .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-  .strip .th.ph{background:var(--slot);border-style:dashed;border-color:var(--rule-hi)}
+  /* preview tiles: the work is visible before anything is opened */
+  .tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 14px;margin-top:22px}
+  .tile{display:flex;flex-direction:column;gap:7px;min-width:0;text-decoration:none;color:var(--ink)}
+  .tile-img{position:relative;display:block;aspect-ratio:4/3;max-width:100%;background:var(--stage);border-radius:2px;overflow:hidden}
+  .tile-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .25s ease}
+  .tile:hover .tile-img img{transform:scale(1.035)}
+  /* on hover, the CAD view gives way to the next still (usually the built part) */
+  .tile-img img.alt{opacity:0;background:var(--stage);transition:opacity .22s ease,transform .25s ease}
+  @media (hover:hover){.tile:hover .tile-img img.alt,.tile:focus-visible .tile-img img.alt{opacity:1}}
+  .tile-t{font-size:14px;font-weight:600;line-height:1.3;letter-spacing:-.008em;text-wrap:balance}
+  .tile:hover .tile-t{color:var(--accent)}
+  .tile-c{font-family:var(--m);font-size:10.5px;line-height:1.4;color:var(--mute);margin-top:-4px}
+  .also{margin:14px 0 0;font-family:var(--m);font-size:11px;line-height:1.7;color:var(--mute)}
+  .also a{color:var(--body);text-decoration:none;border-bottom:1px solid var(--rule-hi)}
+  .also a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+  .exp.open .tiles,.exp.open .also{display:none}
 
-  .toggle{margin-top:16px;display:inline-flex;align-items:center;gap:8px;background:none;border:1px solid var(--rule-hi);
+  .toggle{margin-top:18px;display:inline-flex;align-items:center;gap:8px;background:none;border:1px solid var(--rule-hi);
     border-radius:2px;padding:7px 12px;font-family:var(--m);font-size:11px;letter-spacing:.07em;text-transform:uppercase;
     color:var(--ink);cursor:pointer}
   .toggle:hover{border-color:var(--accent);color:var(--accent)}
@@ -95,122 +175,188 @@
     transform:rotate(45deg) translate(-2px,-2px);transition:transform .18s ease}
   .toggle[aria-expanded="true"] .chev{transform:rotate(225deg) translate(-1px,-1px)}
 
-  /* project cards */
-  .panel{margin-top:18px}
-  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-  .card{border:1px solid var(--rule);border-radius:3px;background:var(--paper);overflow:hidden;display:flex;flex-direction:column;min-width:0}
-  .card .img{aspect-ratio:4/3;max-width:100%;background:var(--paper);border-bottom:1px solid var(--rule);display:grid;place-items:center;overflow:hidden}
-  .card .img{position:relative}
-  .card .img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-  .ph{background:var(--slot)}
-  .card .img.ph{border-bottom-style:dashed;border-bottom-color:var(--rule-hi);padding:12px;text-align:center}
-  .ph-lb{font-family:var(--m);font-size:10px;line-height:1.5;color:var(--mute);word-break:break-all}
-  .ph-lb b{display:block;font-weight:500;color:var(--rule-hi);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
-  .cbody{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
-  .ctop{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;justify-content:space-between}
-  .card h4{margin:0;font-size:16px;line-height:1.3;letter-spacing:-.012em;color:var(--ink);font-weight:600;text-wrap:balance}
+  /* ---------- project cards ---------- */
+  .panel{margin-top:22px;padding-top:28px;border-top:1px solid var(--rule)}
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:44px 32px}
+  .card{display:flex;flex-direction:column;gap:14px;min-width:0;scroll-margin-top:72px}
+  .card.wide{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px 34px;align-items:start}
+  .card.side{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1fr);gap:14px 20px;align-items:start}
+  .card.wide.side{grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:16px 34px}
+  /* a featured card whose media is a pair: the pair runs the full width, the text sits in two columns under it */
+  .card.wide.feature{display:flex;align-items:stretch;gap:18px}
+  .card.wide.feature .pair{max-width:none}
+  .card.wide.feature .cbody{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 34px;align-content:start}
+  .card.wide.feature .cbody > *{grid-column:1}
+  .card.wide.feature .cbody > .note{grid-column:2;grid-row:1 / span 5;align-self:start}
+  .card.textonly{border-top:1px solid var(--rule);padding-top:16px}
+  .card.textonly.wide{display:flex}
+  .cbody{display:flex;flex-direction:column;gap:10px;min-width:0}
+  .ctop{display:flex;flex-wrap:wrap;gap:2px 12px;align-items:baseline;justify-content:space-between}
+  .card h4{margin:0;font-size:17px;line-height:1.28;font-weight:650;font-stretch:106%;letter-spacing:-.014em;
+    color:var(--ink);text-wrap:balance}
   .card .ctx{font-family:var(--m);font-size:10.5px;color:var(--mute);letter-spacing:.02em}
-  .card p{margin:0;font-size:14px;line-height:1.55}
-  .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:4px}
-  .tag{font-family:var(--m);font-size:10.5px;color:var(--body);background:var(--slot);padding:2px 7px;border-radius:2px}
-  .broke{border-left:2px solid var(--ink);padding:2px 0 2px 12px}
-  .broke .k{display:block;font-family:var(--m);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-bottom:3px}
+  .card p{margin:0;font-size:14.5px;line-height:1.58;max-width:68ch}
+  .card.hit h4{color:var(--accent)}
+
+  /* figures pulled from the text, set like title-block fields */
+  .specs{list-style:none;margin:0;padding:9px 0 10px;display:flex;flex-wrap:wrap;gap:8px 26px;border-block:1px solid var(--rule)}
+  .specs li{display:flex;flex-direction:column;gap:1px;min-width:0}
+  .specs b{font-family:var(--m);font-weight:500;font-size:15px;line-height:1.35;color:var(--ink);
+    font-variant-numeric:tabular-nums;white-space:nowrap}
+  .specs span{font-size:11.5px;line-height:1.35;color:var(--mute)}
+
+  .note{background:var(--stage);border-radius:2px;padding:11px 14px 13px}
+  .note .k{display:flex;align-items:center;gap:7px;font-family:var(--m);font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;margin-bottom:5px}
+  .note .k::before{content:"";width:6px;height:6px;background:currentColor}
+  .note.broke .k{color:var(--fail)}
+  .note.finding .k{color:var(--accent)}
   .needs{font-family:var(--m);font-size:10.5px;line-height:1.5;color:var(--warn);background:var(--warn-soft);padding:6px 8px;border-radius:2px}
-  .card.wide{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
-  .card.wide .img{aspect-ratio:1/1;align-self:start;border-bottom:0;border-right:1px solid var(--rule)}
-  /* carousel: several images in one card slot */
-  .img.car{position:relative;display:block}
-  .car-track{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
-  .car-track::-webkit-scrollbar{display:none}
-  .slide{flex:0 0 100%;height:100%;scroll-snap-align:start;display:grid;place-items:center;overflow:hidden;padding:0;position:relative}
-  .slide img,.slide video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-  .slide.ph{padding:12px;text-align:center}
-  .car-dots{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:6px;pointer-events:none}
-  .car-dots{width:max-content;margin:auto;left:0;right:0;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.85)}
-  .car-dots span{width:6px;height:6px;border-radius:50%;background:var(--rule-hi)}
-  .car-dots span.on{background:var(--ink)}
-  .car-btn{position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;
+  .tags{display:flex;flex-wrap:wrap;gap:5px;padding-top:2px}
+  .tag{font-family:var(--m);font-size:10.5px;line-height:1.5;color:var(--body);border:1px solid var(--rule);padding:1px 7px;border-radius:2px}
+
+  /* media: one plate, a pair at equal height, or a viewer with a thumbnail rail */
+  .media{min-width:0}
+  .plate{position:relative;display:block;width:100%;max-width:100%;padding:0;border:0;background:var(--stage);
+    border-radius:2px;overflow:hidden;cursor:zoom-in;aspect-ratio:var(--ar,1.3333)}
+  .plate img,.plate video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .pair{display:flex;gap:8px;align-items:flex-start;max-width:calc(440px*var(--sum,2))}
+  .pair .plate{flex:var(--ar,1.3333) 1 0%;width:auto;min-width:0}
+  .viewer{position:relative}
+  .track{display:flex;aspect-ratio:4/3;max-width:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
+    overscroll-behavior-x:contain;background:var(--stage);border-radius:2px}
+  .track::-webkit-scrollbar{display:none}
+  .plate.slide{flex:0 0 100%;height:100%;aspect-ratio:auto;border-radius:0;scroll-snap-align:start;background:none}
+  .plate.slide img,.plate.slide video{object-fit:contain}
+  .count{position:absolute;right:8px;top:8px;font-family:var(--m);font-size:10px;letter-spacing:.06em;color:var(--ink);
+    background:rgba(255,255,255,.9);padding:2px 6px;border-radius:2px;pointer-events:none;font-variant-numeric:tabular-nums}
+  .vbtn{position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;
     border:1px solid var(--rule-hi);background:var(--paper);color:var(--ink);cursor:pointer;display:grid;place-items:center;
     opacity:0;transition:opacity .15s ease;padding:0}
-  .car-btn.prev{left:8px}.car-btn.next{right:8px}
-  .car-btn::before{content:"";width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor}
-  .car-btn.prev::before{transform:translateX(2px) rotate(135deg)}
-  .car-btn.next::before{transform:translateX(-2px) rotate(-45deg)}
-  .img.car:hover .car-btn,.car-btn:focus-visible{opacity:1}
-  @media (hover:none){.car-btn{display:none}}
-  .card.wide .img.ph{border-right-style:dashed;border-right-color:var(--rule-hi)}
-  .card.textonly .cbody{padding-top:16px}
-  .card.wide.textonly{display:flex}
-  .card.textonly{grid-column:1 / -1}
+  .vbtn.prev{left:8px}.vbtn.next{right:8px}
+  .vbtn::before{content:"";width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor}
+  .vbtn.prev::before{transform:translateX(2px) rotate(135deg)}
+  .vbtn.next::before{transform:translateX(-2px) rotate(-45deg)}
+  .viewer:hover .vbtn,.vbtn:focus-visible{opacity:1}
+  @media (hover:none){.vbtn{display:none}}
+  .rail{display:flex;gap:6px;margin-top:6px;overflow-x:auto;scrollbar-width:none}
+  .rail::-webkit-scrollbar{display:none}
+  .rt{position:relative;flex:0 0 auto;width:60px;aspect-ratio:4/3;padding:0;border:0;background:var(--stage);
+    border-radius:2px;overflow:hidden;cursor:pointer;opacity:.6;transition:opacity .15s ease}
+  .rt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .rt:hover{opacity:1}
+  .rt.on{opacity:1;box-shadow:inset 0 0 0 1.5px var(--ink)}
+  .rt.on::before{content:"";position:absolute;inset:0;z-index:1;box-shadow:inset 0 0 0 1.5px var(--ink);border-radius:2px}
+  .rt.vid::after{content:"";position:absolute;z-index:1;left:50%;top:50%;transform:translate(-35%,-50%);
+    border-left:9px solid var(--paper);border-block:6px solid transparent;filter:drop-shadow(0 0 2px rgba(0,0,0,.6))}
 
-  /* background */
-  .bg-grid{display:grid;gap:26px;margin-top:22px}
-  .bg-row{display:grid;grid-template-columns:150px minmax(0,1fr);gap:6px 20px}
-  .bg-row dt{font-family:var(--m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);padding-top:3px}
-  .bg-row dd{margin:0;max-width:66ch}
-  .bg-item + .bg-item{margin-top:12px}
+  .ph{background:var(--stage);outline:1px dashed var(--rule-hi);outline-offset:-1px;display:grid;place-items:center;padding:12px;text-align:center}
+  .ph-lb{font-family:var(--m);font-size:10px;line-height:1.5;color:var(--mute);word-break:break-all}
+  .ph-lb b{display:block;font-weight:500;color:var(--rule-hi);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+
+  /* ---------- background ---------- */
+  .bg-grid{display:grid;gap:30px;margin-top:26px}
+  .bg-row{display:grid;grid-template-columns:170px minmax(0,1fr);gap:6px 24px;margin:0}
+  .bg-row > dt{font-family:var(--m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+  .bg-row > dd{margin:0;max-width:76ch;min-width:0}
+  .bg-item + .bg-item{margin-top:14px}
   .bg-item .h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 12px;color:var(--ink);font-weight:600;font-size:15px}
-  .bg-item p{margin:2px 0 0;font-size:14px}
+  .bg-item p{margin:2px 0 0;font-size:14.5px}
   .cert-shots{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-  .cs{width:104px;height:104px;max-width:100%;border:1px solid var(--rule);border-radius:2px;overflow:hidden;
-    display:grid;place-items:center;background:var(--paper)}
-  .cs{position:relative}
+  .cs{position:relative;width:148px;aspect-ratio:1;max-width:100%;padding:0;border:0;border-radius:2px;overflow:hidden;
+    background:var(--stage);cursor:zoom-in}
   .cs img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .cs.ph{border-style:dashed;border-color:var(--rule-hi)}
-  .skills{margin:0;display:grid;grid-template-columns:120px minmax(0,1fr);gap:8px 18px;font-size:14px}
-  .skills dt{font-family:var(--m);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);padding-top:2px}
+  .skills{margin:0;display:grid;grid-template-columns:130px minmax(0,1fr);gap:8px 18px;font-size:14.5px}
+  .skills dt{font-family:var(--m);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);padding-top:3px}
   .skills dd{margin:0}
-  footer{padding-block:48px 64px;font-family:var(--m);font-size:11px;color:var(--mute)}
+  footer{display:flex;flex-wrap:wrap;gap:6px 20px;justify-content:space-between;margin-top:56px;
+    padding-block:18px 56px;border-top:1px solid var(--rule);font-family:var(--m);font-size:11px;color:var(--mute)}
+  footer a{color:var(--mute);text-decoration:none}
+  footer a:hover{color:var(--accent)}
 
-  @media (max-width:640px){
-    :root{--mk:40px}
-    .exp{gap:0 14px}
-    .mark{font-size:9px}
-    .grid{grid-template-columns:minmax(0,1fr)}
-    .card.wide{grid-template-columns:minmax(0,1fr)}
-    .card.wide .img{aspect-ratio:4/3;align-self:auto;border-right:0;border-bottom:1px solid var(--rule)}
-    .card.wide .img.ph{border-bottom-style:dashed;border-bottom-color:var(--rule-hi)}
-    .bg-row{grid-template-columns:minmax(0,1fr)}
-    .skills{grid-template-columns:minmax(0,1fr);gap:2px 0}
-    .skills dd{margin-bottom:8px}
-    .strip .th{width:60px;height:60px}
-    .exp-main.has-photo{grid-template-columns:minmax(0,1fr)}
-    .me{max-width:260px}
-  }
-  @media (prefers-reduced-motion:reduce){.toggle .chev,.car-btn{transition:none}.car-track{scroll-behavior:auto}}
-  /* section nav: sticky bar on narrow screens, floating labels at the right edge on wide ones */
-  #nav{display:flex;gap:0;overflow-x:auto;position:sticky;top:env(safe-area-inset-top,0px);z-index:10;
+  /* ---------- enlarged view ---------- */
+  .lb{position:fixed;inset:0;z-index:50;background:var(--scrim);color:var(--on-scrim);
+    display:grid;grid-template-rows:minmax(0,1fr) auto;gap:10px;
+    padding:max(18px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px))
+            max(14px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+  .lb-fig{min-height:0;min-width:0;display:grid;place-items:center}
+  .lb-fig img,.lb-fig video{width:auto;height:auto;max-width:min(100%,1500px);max-height:calc(100vh - 110px);
+    max-height:calc(100dvh - 110px);object-fit:contain;background:var(--paper);border-radius:2px}
+  .lb-cap{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 16px;font-family:var(--m);font-size:11.5px;
+    letter-spacing:.04em;text-align:center}
+  .lb-cap .n{opacity:.65;font-variant-numeric:tabular-nums}
+  .lb button{position:absolute;display:grid;place-items:center;width:40px;height:40px;padding:0;border-radius:50%;
+    border:1px solid rgba(244,246,248,.35);background:rgba(12,16,20,.55);color:var(--on-scrim);cursor:pointer}
+  .lb button:hover{border-color:var(--on-scrim)}
+  .lb button:focus-visible{outline-color:var(--on-scrim)}
+  .lb-x{top:max(14px,env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px))}
+  .lb-x::before,.lb-x::after{content:"";position:absolute;width:15px;height:1.5px;background:currentColor}
+  .lb-x::before{transform:rotate(45deg)}.lb-x::after{transform:rotate(-45deg)}
+  .lb-nav{top:50%;transform:translateY(-50%)}
+  .lb-nav.prev{left:max(14px,env(safe-area-inset-left,0px))}
+  .lb-nav.next{right:max(14px,env(safe-area-inset-right,0px))}
+  .lb-nav::before{content:"";width:9px;height:9px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor}
+  .lb-nav.prev::before{transform:translateX(2px) rotate(135deg)}
+  .lb-nav.next::before{transform:translateX(-2px) rotate(-45deg)}
+  .lb.one .lb-nav{display:none}
+
+  /* ---------- section nav: sticky bar, or floating labels at the right edge when there is room ---------- */
+  #nav{display:flex;gap:0;overflow-x:auto;position:sticky;top:env(safe-area-inset-top,0px);z-index:9;
     background:var(--paper);border-bottom:1px solid var(--rule);max-width:100%;scrollbar-width:none;
-    padding-inline:max(calc((100% - 880px)/2), clamp(16px,4vw,32px))}
+    padding-left:max(calc(max(0px,(100% - var(--shell))/2) + var(--gut)),env(safe-area-inset-left,0px));
+    padding-right:max(calc(max(0px,(100% - var(--shell))/2) + var(--gut)),env(safe-area-inset-right,0px))}
   #nav::-webkit-scrollbar{display:none}
   #nav a{font-family:var(--m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);
     text-decoration:none;padding:11px 14px 9px;white-space:nowrap;border-bottom:2px solid transparent}
   #nav a:first-child{padding-left:0}
   #nav a.on{color:var(--accent);border-bottom-color:var(--accent)}
   #nav a::before{display:none}
-  .exp,#background{scroll-margin-top:52px}
-  @media (min-width:1200px){
-    #nav{position:fixed;top:50%;right:clamp(18px,2.6vw,38px);left:auto;transform:translateY(-50%);width:auto;
+  .exp,#background,#top{scroll-margin-top:52px}
+  @media (min-width:1420px){
+    #nav{position:fixed;top:50%;right:clamp(18px,2.4vw,38px);left:auto;transform:translateY(-50%);width:auto;
       flex-direction:column;align-items:flex-end;overflow:visible;background:none;border-bottom:0;
-      padding-inline:0;gap:7px;z-index:5}
+      padding-left:0;padding-right:0;gap:7px;z-index:5}
     #nav a{display:flex;flex-direction:row-reverse;align-items:center;gap:7px;padding:0;border-bottom:0;
-      font-size:9.5px;letter-spacing:.13em;color:var(--ink);opacity:.18;transition:opacity .3s ease,color .3s ease}
+      font-size:9.5px;letter-spacing:.13em;color:var(--ink);opacity:.3;transition:opacity .3s ease,color .3s ease}
     #nav a:first-child{padding-left:0}
     #nav a::before{display:block;content:"";width:11px;height:1px;background:currentColor;
       transform:scaleX(.3);transform-origin:right;transition:transform .3s ease}
-    #nav a:hover{opacity:.5}
+    #nav a:hover{opacity:.6}
     #nav a.on{opacity:1;color:var(--accent);border-bottom-color:transparent}
     #nav a.on::before{transform:scaleX(1)}
-    .exp,#background{scroll-margin-top:24px}
+    .exp,#background,.card{scroll-margin-top:24px}
   }
-  @media (prefers-reduced-motion:reduce){#nav a,#nav a::before{transition:none}}
 
+  @media (max-width:900px){
+    .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid{gap:40px 24px}
+  }
+  @media (max-width:700px){
+    :root{--mk:40px}
+    .exp{gap:0 14px}
+    .mark{font-size:9px}
+    .exp-main.has-photo{grid-template-columns:minmax(0,1fr)}
+    .me{max-width:168px}
+    .tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px}
+    .grid{grid-template-columns:minmax(0,1fr);gap:36px}
+    .card.wide,.card.wide.side{grid-template-columns:minmax(0,1fr)}
+    .card.wide.feature .cbody{display:flex}
+    .card.side,.card.wide.side{grid-template-columns:minmax(0,.62fr) minmax(0,1fr);gap:12px 16px}
+    .bg-row{grid-template-columns:minmax(0,1fr)}
+    .skills{grid-template-columns:minmax(0,1fr);gap:2px 0}
+    .skills dd{margin-bottom:8px}
+    .cs{width:calc((100% - 16px)/3)}
+    .lb-nav{top:auto;bottom:max(48px,env(safe-area-inset-bottom,0px));transform:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .toggle .chev,.vbtn,.db-row,.tile-img img,.tile-img img.alt,.rt,#nav a,#nav a::before{transition:none}
+    .track{scroll-behavior:auto}
+  }
 </style>
-</head>
-<body>
 
 <nav id="nav" aria-label="Sections">
-  <a href="#mcml" class="on">MCML</a>
+  <a href="#top" class="on">Home</a>
+  <a href="#mcml">MCML</a>
   <a href="#utfr">UTFR</a>
   <a href="#personal">Projects</a>
   <a href="#coursework">Coursework</a>
@@ -220,26 +366,46 @@
 <div class="draft-bar" id="draftBar" hidden>Draft view. Gray boxes show the file name each image needs in that project's 04_selects folder. Amber notes are missing info. Both disappear when DRAFT is set to false.</div>
 
 <div class="shell">
-  <header class="mast">
-    <h1>Seongjin Kim</h1>
-    <div class="ko">김성진</div>
-    <p class="who">Mechanical Engineering, University of Toronto · Toronto, ON</p>
-    <p class="lede">I bring broken machines back up and design the parts that go in them. Motion control, additive manufacturing, and the CAD in between.</p>
-    <span class="avail">Available for PEY Co-op · 12–16 months · 2027–2028</span>
-    <div class="links">
-      <a class="cta" href="https://linkedin.com/in/seongjinkim0820">LinkedIn</a>
-      <span class="txt">seoj.kim@mail.utoronto.ca</span>
-      
+  <header class="mast" id="top">
+    <div class="mast-txt">
+      <h1>Seongjin Kim</h1>
+      <div class="ko">김성진</div>
+      <p class="who">Mechanical Engineering, University of Toronto · Toronto, ON</p>
+      <p class="lede">I bring broken machines back up and design the parts that go in them. Motion control, additive manufacturing, and the CAD in between.</p>
+      <span class="avail">Available for PEY Co-op · 12–16 months · 2027–2028</span>
+      <div class="links">
+        <a class="cta" href="https://linkedin.com/in/seongjinkim0820">LinkedIn</a>
+        <span class="mail">
+          <a id="mailLink" href="mailto:seoj.kim@mail.utoronto.ca">seoj.kim@mail.utoronto.ca</a>
+          <button type="button" class="copy" id="copyMail">Copy</button>
+        </span>
+      </div>
     </div>
+
+    <figure class="db" aria-label="The CAD model beside the built part, for five projects">
+      <div class="db-stage">
+        <div class="db-row" id="dbRow">
+          <button type="button" class="db-pane cad" id="dbCad"><img alt=""><span class="db-lb">CAD</span></button>
+          <button type="button" class="db-pane built" id="dbBuilt"><img alt=""><span class="db-lb">Built</span></button>
+        </div>
+      </div>
+      <figcaption class="db-bar">
+        <div class="db-tabs" id="dbTabs" role="tablist" aria-label="Project shown"></div>
+        <a class="db-go" id="dbGo" href="#personal">See the project</a>
+      </figcaption>
+    </figure>
   </header>
 
   <section aria-labelledby="exp-h">
-    <h2 class="sec-h" id="exp-h">Experience</h2>
+    <div class="sec-row">
+      <h2 class="sec-h" id="exp-h">Experience</h2>
+      <button type="button" class="all" id="allBtn" aria-pressed="false">Expand all</button>
+    </div>
     <ol class="tl" id="timeline"></ol>
   </section>
 
   <section id="background" aria-labelledby="bg-h">
-    <h2 class="sec-h" id="bg-h">Background</h2>
+    <div class="sec-row"><h2 class="sec-h" id="bg-h">Background</h2></div>
     <div class="bg-grid">
       <dl class="bg-row">
         <dt>Education</dt>
@@ -261,10 +427,10 @@
           <div class="bg-item">
             <div class="h"><span>Basic Machining, George Brown College</span><span class="when">Feb 2026</span></div>
             <p>Two-day lathe and milling course, completed by machining a working single-cylinder pneumatic engine. Final grade 100%.</p>
-            <div class="cert-shots" data-folder="13_george-brown-machining">
-              <div class="cs" data-img="gb_lathe" data-alt="Turning on the manual lathe"></div>
-              <div class="cs" data-img="gb_mill" data-alt="Milling in a Kurt vise"></div>
-              <div class="cs" data-img="gb_engine" data-alt="The finished pneumatic engine"></div>
+            <div class="cert-shots" data-folder="13_george-brown-machining" data-title="Basic Machining, George Brown College">
+              <button type="button" class="cs" data-img="gb_lathe" data-alt="Turning on the manual lathe"></button>
+              <button type="button" class="cs" data-img="gb_mill" data-alt="Milling in a Kurt vise"></button>
+              <button type="button" class="cs" data-img="gb_engine" data-alt="The finished pneumatic engine"></button>
             </div>
           </div>
           <div class="bg-item">
@@ -289,7 +455,18 @@
     </div>
   </section>
 
-  <footer>Seongjin Kim · Toronto, ON</footer>
+  <footer>
+    <span>Seongjin Kim · Toronto, ON</span>
+    <span><a href="https://linkedin.com/in/seongjinkim0820">LinkedIn</a> · <a href="mailto:seoj.kim@mail.utoronto.ca">seoj.kim@mail.utoronto.ca</a></span>
+  </footer>
+</div>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Enlarged view">
+  <div class="lb-fig" id="lbFig"></div>
+  <div class="lb-cap"><span id="lbT"></span><span class="n" id="lbN"></span></div>
+  <button type="button" class="lb-nav prev" id="lbPrev" aria-label="Previous image"></button>
+  <button type="button" class="lb-nav next" id="lbNext" aria-label="Next image"></button>
+  <button type="button" class="lb-x" id="lbX" aria-label="Close"></button>
 </div>
 
 <script>
@@ -299,7 +476,46 @@
    DRAFT = false  hides anything missing. Flip before going live.
    ============================================================ */
 var DRAFT = false;
-var IMG_ROOT = "01_projects/";   // site reads each project's 05_web folder
+// images come from each project's 05_web folder: one level up when this file sits in 03_site,
+// alongside it on the live site
+var IMG_ROOT = /\/03_site\//.test(location.pathname) ? "../01_projects/" : "01_projects/";
+
+/* Width / height of every image that is not 4:3, so it lays out without a jump.
+   An image missing from this list is measured when it loads. */
+var AR = {
+  "mcml_first-print": 0.561,
+  "mcml_me-in-lab": 0.75,
+  "camera-arm_02_full": 0.597,
+  "camera-arm_hero": 1.209,
+  "grinder_hero": 0.751,
+  "jet-engine_hero": 0.563,
+  "mat-indicator_05_app": 0.507,
+  "teleop_02_photo": 0.561,
+  "utfr_corner-assembly": 0.561,
+  "utfr_planet-shafts": 0.561,
+  "utfr_ut26-unveiling": 0.75,
+  "household_hero": 1.02,
+  "gb_engine": 1.0,
+  "gb_lathe": 1.0,
+  "gb_mill": 1.0,
+  "jacket_02_flow": 0.954,
+  "fittings_mass-printed": 0.75,
+  "fittings_mass-brass": 0.75,
+  "loop_cad": 2.118,
+  "loop_cad_full": 1.975,
+  "radmount_fea_a": 1.118,
+  "radmount_fea_b": 1.039
+};
+
+/* The pairs shown at the top of the page: a CAD view beside the built part.
+   "project" must match a card title below; that is where "See the project" goes. */
+var HERO = [
+  { tab: "Coffee grinder", project: "Motorized coffee grinder",    folder: "05_coffee-grinder",        cad: "grinder_cad",   built: "grinder_hero" },
+  { tab: "Cooling jacket", project: "Transparent cooling jacket",  folder: "15_utfr-cooling-jacket",   cad: "jacket_hero",   built: "jacket_02_flow" },
+  { tab: "The Columbine",  project: "The Columbine",               folder: "08_columbine-scale-model", cad: "columbine_cad", built: "columbine_hero" },
+  { tab: "Robot arm pair", project: "Teleoperated robot arm pair", folder: "09_teleop-arm-pair",       cad: "teleop_hero",   built: "teleop_02_photo" },
+  { tab: "Desk fan",       project: "Jet engine desk fan",         folder: "14_jet-engine-desk-fan",   cad: "fan_cad",       built: "fan_hero" }
+];
 
 var EXPERIENCE = [
   {
@@ -309,7 +525,7 @@ var EXPERIENCE = [
     meta: "Dept. of Mechanical & Industrial Engineering · Supervisor: Prof. Patrick Lee",
     when: "May 2026 – Present",
     roles: [["Work-Study Research Assistant", "Fall 2026 – Winter 2027"], ["Volunteer", "May – Aug 2026"]],
-    summary: "Revived an abandoned large-format pellet-fed 3D printer that two prior capstone teams had left non-functional, working from an outdated manual with no BOM. Took it to first print and raised build height from 150 mm to 315 mm.",
+    summary: "Revived an abandoned large-format pellet-fed 3D printer that two prior capstone teams had left non-functional, working from an outdated manual with no BOM. Took it to first print and extended the Z travel from 150 mm to about 315 mm.",
     folder: "01_mcml-pellet-printer",
     photo: { img: "mcml_me-in-lab", alt: "Seongjin in the MCML lab" },
     projects: [
@@ -318,16 +534,16 @@ var EXPERIENCE = [
         broke: "The old board, before it was replaced. The manual had + and − swapped, and a power-up on the reversed polarity smoked the board at that same driver slot. Moving the motors to other ports didn't help. Then, probing the back of the board with a multimeter, I shorted what was probably a high-voltage pin to a communication pin, which finished it off. That's how we ended up buying the new board. Next time, with a history like that (the \"fried\" note and the smoke), I'd call the board dead right away and replace it instead of debugging it live.",
         tags: ["Klipper", "TMC5160 · SPI", "Manta M8P"] },
       { t: "Homing: sensorless to endstops", img: "mcml_endstops",
-        p: "Brought up sensorless StallGuard2 homing, then traced inconsistent Z-axis trigger sensitivity to the belt drive. Moved all three axes to physical endstops: selected the sensors, designed the three endstop mounts in SolidWorks, and configured the trigger and homing sequence. Printed the mounts on personal equipment for next-day installation.",
-        tags: ["StallGuard2", "Klipper", "SolidWorks"] },
+        p: "Brought up sensorless StallGuard2 homing, then traced inconsistent Z-axis trigger sensitivity to the belt drive. Moved all three axes to physical endstops: selected the sensors, designed the three endstop mounts in Fusion 360, and configured the trigger and homing sequence. Printed the mounts on personal equipment for next-day installation.",
+        tags: ["StallGuard2", "Klipper", "Fusion 360"] },
       { t: "Z-stage redesign and bearing mounts", img: "mcml_z-stage",
-        p: "Extended the Z travel to raise build height from 150 mm to 315 mm (2.1x), for a usable build volume of 400 × 400 × 315 mm, designing two new Z-axis mounts for it. Also designed the two Y-axis ball bearing mounts the machine was missing. All four were modelled in SolidWorks and printed on personal equipment for next-day installation. The machine CAD shown is the earlier team's model; the Y-axis bearing mounts and the extended Z travel in it are mine.",
+        p: "Extended the Z travel from 150 mm to about 315 mm (2.1x), designing two new Z-axis mounts for it. I set the Z endstop higher to cut homing time, so the usable height is about 200 mm. Reverse-engineered the two Y-axis ball bearing mounts from the existing ones, widening the gap from 20 mm to 40 mm for 40 mm extrusion. All four were modelled in SolidWorks and printed on personal equipment for next-day installation. The machine CAD shown is the earlier team's model; the Y-axis bearing mounts and the extended Z travel in it are mine.",
         tags: ["SolidWorks", "150 → 315 mm", "FDM"] },
       { t: "First print", img: "mcml_first-print",
         p: "Extended and soldered the thermistor and heater leads on a never-run extruder, then brought it to its first print: a 3DBenchy and calibration cube from roughly 40 g of hand-chopped PLA, confirming the full pellet-to-part path.",
         tags: ["Pellet extrusion"] },
       { t: "Feedstock DSC", img: null,
-        p: "Ran DSC on an unlabelled polymer feedstock. The thermal profile indicated PP or modified PLA rather than the stated material.",
+        p: "The lab's TA ran DSC on an unlabelled polymer feedstock while I observed. The thermal profile indicated PP or modified PLA rather than the stated material.",
         tags: ["DSC"] }
     ]
   },
@@ -337,18 +553,30 @@ var EXPERIENCE = [
     org: "Formula SAE team",
     when: "Sep 2025 – Present",
     roles: [["Cooling loop, Aero sub-team", "Jun 2026 – Present"], ["Drivetrain sub-team, UT26", "Sep 2025 – Jun 2026"]],
-    summary: "Designed a transparent, resin-printed cooling jacket in CATIA and built a test loop around it so the water flow inside could be seen. Also machined planet shafts for the UT26 car's planetary gearboxes on a manual lathe, and helped assemble the gearbox corners and drivetrain cooling loop. Now senior member on cooling loop after drivetrain merged into aero and chassis, with no sub-team lead, and modelling the car's full cooling loop in CAD.",
+    summary: "Designed a transparent, resin-printed cooling jacket in CATIA and built a test loop around it so the water flow inside could be seen. Also machined planet shafts for the UT26 car's planetary gearboxes on a manual lathe, and helped assemble the gearbox corners and drivetrain cooling loop. Now senior member on cooling loop after drivetrain merged into aero and chassis, with no sub-team lead. Designed 3D-printed sensor fittings that weigh 13 g against 125 g off the shelf. Currently modelling the car's full cooling loop in CAD.",
     folder: "11_utfr-ut26-drivetrain",
     photo: { img: "utfr_ut26-unveiling", alt: "Seongjin at the UT26 unveiling" },
     projects: [
       { t: "Transparent cooling jacket", folder: "15_utfr-cooling-jacket", ctx: "Oct 2026", imgs: ["jacket_hero", "jacket_02_flow"],
-        p: "Built a transparent cooling jacket to see how the water flows inside, while the team works out why the motor was overheating. Designed it in CATIA, resin 3D printed it, sanded and clear-coated it, and sealed it with silicone. Built a cooling loop around it with a pump running about 11 L/min, then tested it with the team. One pressure sensor was broken, so the test was visual, using glitter as a tracer.",
+        specs: [["~11 L/min", "pump flow"], ["~200 W", "removed at 60 °C ΔT"], ["377 W", "needed"]],
+        p: "Built a transparent cooling jacket to see how the water flows inside, while the team works out why the motor was overheating. Designed it in CATIA, and a teammate resin 3D printed it. I sanded and clear-coated it and sealed it with silicone. Built a cooling loop around it with a pump running about 11 L/min, then tested it with the team. One pressure sensor was broken, so the test was visual, using glitter as a tracer.",
         finding: "No air pockets, which was good. But as soon as the glitter entered the channel it split between the first loop and the bottom loop, because the two are connected. That causes backflow and turbulence in the first loop, so the channel layout needs to change. Analyzing the bench data in Python showed about 200 W removed at a 60 °C ΔT, against 377 W needed. The team is now setting up a simulation to replicate the test.",
-        tags: ["CATIA", "Resin printing", "Flow visualization", "Cooling loop"] },
-      { t: "Car cooling loop CAD", ctx: "In progress", folder: "02_utfr-cooling-loop", img: null,
-        p: "Modelling the full cooling loop on the car: pump, radiator, hard lines and soft lines. Next up are the pressure sensor mounts and the filler neck.",
-        tags: ["CAD", "Packaging", "Cooling"] },
+        tags: ["CATIA", "Flow visualization", "Cooling loop"] },
+      { t: "3D-printed sensor fittings", folder: "16_utfr-printed-fittings", ctx: "Nov 2026",
+        imgs: ["fittings_lineup", "fittings_soak", "fittings_pump", "fittings_chain", "fittings_mass-printed", "fittings_mass-brass"],
+        specs: [["13 g vs 125 g", "printed vs off-the-shelf"], ["9", "materials tested"], ["85 °C · 5 bar", "max test cycle, vs ~1.5 bar in the loop"]],
+        p: "Off-the-shelf ½\" to ¾\" fittings with a sensor port and a tight turn near the radiator did not fit the space, so I am replacing them with custom 3D-printed fittings that also reduce kinking and mass. The coolant reaches about 60 °C and the sensors need ⅛\" NPT threads. I shortlisted nine materials across MJF, SLS, resin and FDM, printed a tee in each, tapped and plugged its NPT port, then ran two hot-water pressure cycles with a bike pump: 60 °C at 3 bar, then 85 °C at 5 bar. A printed fitting weighs 13 g, against 125 g for the cast tee and brass barbs it replaces.",
+        finding: "MJF PA12S-HP, MJF PA11-HP and the high-temperature resin passed both cycles, so PA12S and the temp resin are the two candidates for the car. No decision yet. Two in-house resins went soft at 60 °C, PET-CF17 leaked through the solid body, and ABS-GF leaked through the layer lines at the thread.",
+        tags: ["Design for AM", "MJF", "Material testing", "⅛\" NPT"] },
+      { t: "Radiator mounts", folder: "17_utfr-radiator-mounts", ctx: "Nov 2026", imgs: ["radmount_fea_b", "radmount_fea_a"],
+        specs: [["100 N", "load along the x axis"], ["0.499 → 0.354 mm", "max displacement, V1 → V2"], ["38 → 30 g", "per mount in V3, 32 g saved in total"]],
+        p: "Designed the radiator mounts in 3DEXPERIENCE Sheet Metal Design as two small 0.05\" steel mounts instead of one piece, to save weight, with gussets for stiffness. Ran linear structural FEA with a 100 N load along the x axis. V1 peaked at 0.499 mm, mostly at the thin standalone tab, so V2 extended the gusset to the end of that tab and brought it down to 0.354 mm. V3 is a little shorter and lighter, taking each mount from 38 g to 30 g (32 g saved in total), and is the version sent to the waterjet. My first time using 3DEXPERIENCE's structural validation and sheet metal tools.",
+        tags: ["Sheet metal", "FEA", "3DEXPERIENCE"] },
+      { t: "Car cooling loop CAD", ctx: "In progress", folder: "02_utfr-cooling-loop", wide: true, imgs: ["loop_cad", "loop_cad_full"],
+        p: "Modelling the full cooling loop on the car in CATIA: both radiators with their fans, the pumps, the hard lines and soft lines, and the custom 3D-printed sensor fittings. The layout is not final yet.",
+        tags: ["CATIA", "Routing", "Cooling loop"] },
       { t: "Planet shafts and gearbox corners", imgs: ["utfr_planet-shafts", "utfr_corner-assembly"],
+        specs: [["3 of 12", "planet shafts, plus part of a fourth"], ["4340", "alloy steel"]],
         p: "Machined 3 of the 12 planet shafts for the planetary gearboxes, plus part of a fourth, on a manual lathe from 4340 alloy steel to the team's drawings. The tolerances were tight, so each one took a while, and heat treatment was outsourced. Then helped assemble the gearbox corners, pressing the planet shafts and gears for a few of them. The shafts are installed on the UT26 vehicle.",
         tags: ["Manual lathe", "4340 steel", "Press fits"] },
       { t: "Assembly and testing support", img: null,
@@ -364,13 +592,16 @@ var EXPERIENCE = [
     summary: "Things I design and build around my own needs, plus one commissioned client build. Most of it is designed for 3D printing.",
     projects: [
       { t: "Motorized coffee grinder", ctx: "Aug 2026", folder: "05_coffee-grinder", imgs: ["grinder_cad", "grinder_hero"], wide: true,
+        specs: [["25:1", "two-stage reduction"], ["5", "iterations"]],
         p: "Motorized a manual coffee grinder with a motor and electronics salvaged from a massage gun. A single 40:8 stage barely moved it, so I added a second stage and compounded the two for 25:1, the maximum ratio a two-stage configuration gave me. Developed across five iterations, with a generative-design shaft holder to carry the output torque.",
         broke: "The pinion sheared. I traced it to its set screw, which pushed the gear past the end of the motor shaft, so the unsupported top sheared along the layer lines. I switched to a herringbone pair, whose opposed helices keep the gears axially located without a set screw.",
         tags: ["Gear train", "Generative design", "Failure analysis"] },
       { t: "The Columbine", ctx: "Freelance · Jun – Aug 2026", folder: "08_columbine-scale-model", imgs: ["columbine_cad", "columbine_lights.mp4", "columbine_hero", "columbine_06_electronics", "columbine_05_cutaway", "columbine_03_interior"],
+        specs: [["1:51", "scale"], ["7 weeks", "drawings to finished build"], ["67", "facade panels"], ["54", "LEDs"]],
         p: "Commissioned 1:51 scale model of a corner townhouse, from client drawings to finished build in seven weeks. Removable stackable floors, 67 facade panels batch-textured with a custom web tool, and a hand-soldered 54-LED lighting system with ESP32 firmware and wireless browser control.",
         tags: ["Fusion 360", "ESP32", "Soldering"] },
       { t: "Teleoperated robot arm pair", ctx: "2025 – 2026", folder: "09_teleop-arm-pair", imgs: ["teleop_hero", "teleop_02_photo"],
+        specs: [["2 × 4-DOF", "matched arms"], ["5 V 2 A", "dedicated servo supply"]],
         p: "Two kinematically matched 4-DOF arms, a potentiometer input arm and a micro-servo follower, running leader-follower teleoperation on Arduino with a PCA9685 servo driver. Fixed servo brownouts with a dedicated 5 V 2 A supply and overshoot by constraining the input to map().",
         tags: ["Arduino", "PCA9685", "Servos"] },
       { t: "Motorized jet engine model", folder: "06_jet-engine-model", imgs: ["jet-engine_cad", "jet-engine_hero"],
@@ -398,6 +629,7 @@ var EXPERIENCE = [
         p: "Low-cost robotic camera arm for hobbyist cinematographers. I owned the shoulder joint and specified a differential drive so two smaller, cheaper motors share the lifting load and drive both lift and rotation, instead of sizing one high-torque motor. Calculated joint torque in Python and designed the belt-pulley stepper actuation in SolidWorks.",
         tags: ["SolidWorks", "Python", "Differential drive"] },
       { t: "Adaptive mat placement system", ctx: "ESP II · Winter 2025 · team", folder: "07_esp2-mat-indicator", imgs: ["mat-indicator_hero", "mat-indicator_02_site", "mat-indicator_03_storage", "mat-indicator_04_breadboard", "mat-indicator_05_app"],
+        specs: [["57+", "concepts generated"], ["3", "shortlisted"]],
         p: "Client-sponsored project for Oxygen Yoga & Fitness, replacing fixed mat markers that couldn't adapt to class size. Generated 57+ concepts, narrowed to three, and selected a Digital Mat Indicator with a Pugh matrix. I built the LED prototype and validated its mat spacing against the model.",
         tags: ["Pugh matrix", "Prototype"] },
       { t: "3D printed gearbox", ctx: "MIE243 · Fall 2025 · team", folder: "10_printed-gearbox", imgs: ["gearbox_hero", "gearbox_test.mp4", "gearbox_02_carrier"],
@@ -410,99 +642,188 @@ var EXPERIENCE = [
 (function(){
   var tl = document.getElementById("timeline");
   if (DRAFT) document.getElementById("draftBar").hidden = false;
-
-  function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
-
-  function placeholder(box, folder, name){
-    box.classList.add("ph");
-    box.textContent = "";
-    var lb = el("div","ph-lb");
-    lb.appendChild(el("b",null,"image"));
-    lb.appendChild(document.createTextNode(folder + "/04_selects/" + name + ".png"));
-    box.appendChild(lb);
-  }
-
-  // box: container; on load failure it becomes a labelled slot (draft) or is removed (live)
-  function image(box, folder, name, thumb, onGone){
-    var img = new Image();
-    img.alt = "";
-    img.loading = "lazy";
-    img.decoding = "async";
-    img.onerror = function(){
-      if (DRAFT) { if (thumb) { box.classList.add("ph"); box.textContent=""; } else placeholder(box, folder, name); }
-      else { box.remove(); if (onGone) onGone(); }
-    };
-    img.src = IMG_ROOT + folder + "/05_web/" + name + (thumb ? "_thumb" : "") + ".webp";
-    box.appendChild(img);
-  }
-
   var REDUCE = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // short silent loop; plays on its own unless the viewer prefers reduced motion
-  function video(box, folder, name, onGone){
-    var base = IMG_ROOT + folder + "/05_web/" + name;
+  function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+  function isVideo(n){ return /\.mp4$/i.test(n); }
+  function names(p){ return p.imgs || (p.img ? [p.img] : []); }
+  function key(n){ return n.replace(/\.mp4$/i, ""); }
+  function arOf(n){ return AR[key(n)] || 4/3; }
+  function slug(s){ return "p-" + s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
+  // path of a still: the image itself, its thumbnail, or a video's poster frame
+  function still(folder, n, thumb){
+    var b = IMG_ROOT + folder + "/05_web/";
+    return isVideo(n) ? b + key(n) + "_poster.webp" : b + n + (thumb ? "_thumb" : "") + ".webp";
+  }
+  function img(src, alt, eager){
+    var i = new Image(); i.alt = alt || ""; i.decoding = "async"; if (!eager) i.loading = "lazy"; i.src = src; return i;
+  }
+  // draft only: a labelled slot naming the file an image needs
+  function slot(box, folder, name){
+    box.classList.add("ph"); box.textContent = "";
+    var lb = el("span","ph-lb");
+    lb.appendChild(el("b",null,"image"));
+    lb.appendChild(document.createTextNode(folder + "/04_selects/" + key(name) + ".png"));
+    box.appendChild(lb);
+  }
+  // short silent loop: WebM first (plays in every modern browser), MP4 as the fallback
+  function video(folder, name, big, onGone){
+    var b = IMG_ROOT + folder + "/05_web/" + name;
     var v = document.createElement("video");
     v.muted = true; v.loop = true; v.playsInline = true;
     v.setAttribute("muted",""); v.setAttribute("playsinline","");
     v.preload = "metadata";
-    v.poster = base.replace(/\.mp4$/i, "_poster.webp");
-    if (REDUCE) v.controls = true; else v.autoplay = true;
-    // WebM first (plays in every modern browser), MP4 as the fallback
-    var sources = [[base.replace(/\.mp4$/i, ".webm"), "video/webm"], [base, "video/mp4"]];
+    v.poster = still(folder, name);
+    if (big) v.controls = true;
+    if (big || !REDUCE) v.autoplay = true;
+    var sources = [[b.replace(/\.mp4$/i, ".webm"), "video/webm"], [b, "video/mp4"]];
     sources.forEach(function(sv, i){
       var so = document.createElement("source"); so.src = sv[0]; so.type = sv[1];
-      if (i === sources.length - 1) so.onerror = function(){
-        if (DRAFT) placeholder(box, folder, name.replace(/\.mp4$/i,""));
-        else { box.remove(); if (onGone) onGone(); }
-      };
+      if (i === sources.length - 1 && onGone) so.onerror = onGone;
       v.appendChild(so);
     });
-    box.appendChild(v);
+    return v;
   }
-  function isVideo(n){ return /\.mp4$/i.test(n); }
 
-  function names(p){ return p.imgs || (p.img ? [p.img] : []); }
+  /* ---------- enlarged view ---------- */
+  var lb = document.getElementById("lb"), lbFig = document.getElementById("lbFig"),
+      lbT = document.getElementById("lbT"), lbN = document.getElementById("lbN");
+  var LB = { items: [], i: 0, from: null };
+  function showLB(i){
+    var n = LB.items.length; LB.i = (i + n) % n;
+    var it = LB.items[LB.i];
+    lbFig.textContent = "";
+    if (isVideo(it.name)) lbFig.appendChild(video(it.folder, it.name, true));
+    else lbFig.appendChild(img(still(it.folder, it.name, false), it.alt || it.title, true));
+    lbT.textContent = it.title;
+    lbN.textContent = n > 1 ? (LB.i + 1) + " / " + n : "";
+    lb.classList.toggle("one", n < 2);
+  }
+  function openLB(items, i, from){
+    LB.items = items; LB.from = from || null;
+    showLB(i); lb.hidden = false;
+    document.documentElement.style.overflow = "hidden";
+    document.getElementById("lbX").focus();
+  }
+  function closeLB(){
+    lb.hidden = true; lbFig.textContent = "";
+    document.documentElement.style.overflow = "";
+    if (LB.from && LB.from.focus) LB.from.focus();
+  }
+  document.getElementById("lbX").addEventListener("click", closeLB);
+  document.getElementById("lbPrev").addEventListener("click", function(){ showLB(LB.i - 1); });
+  document.getElementById("lbNext").addEventListener("click", function(){ showLB(LB.i + 1); });
+  lb.addEventListener("click", function(e){ if (e.target === lb || e.target === lbFig) closeLB(); });
+  document.addEventListener("keydown", function(e){
+    if (lb.hidden) return;
+    if (e.key === "Escape") closeLB();
+    else if (e.key === "ArrowLeft" && LB.items.length > 1) showLB(LB.i - 1);
+    else if (e.key === "ArrowRight" && LB.items.length > 1) showLB(LB.i + 1);
+  });
 
-  // several images in one slot: swipe on phones, arrows on hover, dots show position
-  function carousel(box, folder, list){
-    box.classList.add("car");
-    var track = el("div","car-track"), dots = el("div","car-dots");
-    var prev = el("button","car-btn prev"), next = el("button","car-btn next");
-    prev.type = next.type = "button";
-    prev.setAttribute("aria-label","Previous image"); next.setAttribute("aria-label","Next image");
-    box.appendChild(track); box.appendChild(dots); box.appendChild(prev); box.appendChild(next);
-    function refresh(){
-      var n = track.children.length;
-      if (!n){ box.remove(); return; }
-      dots.innerHTML = "";
-      for (var i=0;i<n;i++) dots.appendChild(el("span"));
-      var single = n < 2; dots.hidden = single; prev.hidden = single; next.hidden = single;
+  /* ---------- a project's media: one plate, a pair at equal height, or a viewer with a rail ---------- */
+  function buildMedia(card, p, folder){
+    var list = names(p);
+    if (!list.length) return null;
+    var items = list.map(function(n){ return { folder: folder, name: n, title: p.t, ar: arOf(n) }; });
+    var media = el("div","media");
+
+    function drop(it, box){
+      if (DRAFT){ slot(box, it.folder, it.name); return; }
+      var k = items.indexOf(it); if (k > -1) items.splice(k, 1);
+      render();
+    }
+    function plate(it, cls){
+      var b = el("button","plate" + (cls ? " " + cls : "")); b.type = "button";
+      b.style.setProperty("--ar", it.ar);
+      b.setAttribute("aria-label", "Enlarge: " + p.t + ", view " + (items.indexOf(it) + 1) + " of " + items.length);
+      if (isVideo(it.name)) b.appendChild(video(it.folder, it.name, false, function(){ drop(it, b); }));
+      else {
+        var im = img(still(it.folder, it.name, false), "");
+        im.onerror = function(){ drop(it, b); };
+        // an image with no entry in AR is measured once it loads
+        im.onload = function(){
+          var r = im.naturalWidth / im.naturalHeight;
+          if (!AR[key(it.name)] && r && Math.abs(r - 4/3) > .05){ AR[key(it.name)] = r; it.ar = r; render(); }
+        };
+        b.appendChild(im);
+      }
+      b.addEventListener("click", function(){ openLB(items, items.indexOf(it), b); });
+      return b;
+    }
+    function render(){
+      media.textContent = "";
+      card.classList.remove("side"); card.classList.remove("feature");
+      if (!items.length){ media.remove(); card.classList.add("textonly"); return; }
+      var sum = items.reduce(function(s, i){ return s + i.ar; }, 0);
+      if (items.length === 1){
+        if (items[0].ar < 1.15) card.classList.add("side");   // tall or square: image beside the text
+        media.appendChild(plate(items[0]));
+      } else if (items.length === 2 && sum <= 2.15){
+        var pr = el("div","pair"); pr.style.setProperty("--sum", sum);
+        if (card.classList.contains("wide")) card.classList.add("feature");
+        items.forEach(function(it){ pr.appendChild(plate(it)); });
+        media.appendChild(pr);
+      } else viewer();
+    }
+    function viewer(){
+      var v = el("div","viewer"), track = el("div","track"), rail = el("div","rail"), count = el("span","count");
+      // all views wider than 4:3 (CAD screenshots): size the frame to the narrowest so nothing is letterboxed
+      var minAr = Math.min.apply(null, items.map(function(i){ return i.ar; }));
+      if (minAr > 4/3 + .02) track.style.aspectRatio = String(minAr);
+      var prev = el("button","vbtn prev"), next = el("button","vbtn next");
+      prev.type = next.type = "button";
+      prev.setAttribute("aria-label","Previous image"); next.setAttribute("aria-label","Next image");
+      var cur = function(){ return Math.round(track.scrollLeft / (track.clientWidth || 1)); };
+      var mark = function(){
+        var i = cur();
+        [].forEach.call(rail.children, function(t, k){ t.classList.toggle("on", k === i); });
+        count.textContent = (i + 1) + " / " + items.length;
+      };
+      var go = function(k){ track.scrollTo({ left: k * track.clientWidth, behavior: REDUCE ? "auto" : "smooth" }); };
+      items.forEach(function(it, k){
+        track.appendChild(plate(it, "slide"));
+        var t = el("button","rt" + (isVideo(it.name) ? " vid" : "")); t.type = "button";
+        t.setAttribute("aria-label", "Show view " + (k + 1) + " of " + items.length);
+        var ti = img(still(it.folder, it.name, true), "");
+        ti.onerror = function(){ ti.remove(); };
+        t.appendChild(ti);
+        t.addEventListener("click", function(){ go(k); });
+        rail.appendChild(t);
+      });
+      track.addEventListener("scroll", function(){ window.requestAnimationFrame(mark); }, {passive:true});
+      prev.addEventListener("click", function(){ go(Math.max(0, cur() - 1)); });
+      next.addEventListener("click", function(){ go(Math.min(items.length - 1, cur() + 1)); });
+      v.appendChild(track); v.appendChild(prev); v.appendChild(next); v.appendChild(count);
+      media.appendChild(v); media.appendChild(rail);
       mark();
     }
-    function mark(){
-      var w = track.clientWidth || 1, i = Math.round(track.scrollLeft / w);
-      [].forEach.call(dots.children, function(d,k){ d.classList.toggle("on", k===i); });
-    }
-    list.forEach(function(name){
-      var sl = el("div","slide"); track.appendChild(sl);
-      if (isVideo(name)) video(sl, folder, name, refresh); else image(sl, folder, name, false, refresh);
-    });
-    track.addEventListener("scroll", function(){ window.requestAnimationFrame(mark); }, {passive:true});
-    prev.addEventListener("click", function(){ track.scrollBy({left:-track.clientWidth, behavior:"smooth"}); });
-    next.addEventListener("click", function(){ track.scrollBy({left: track.clientWidth, behavior:"smooth"}); });
-    refresh();
+    render();
+    return media;
   }
 
+  /* ---------- timeline ---------- */
+  function goCard(id){
+    var c = document.getElementById(id); if (!c) return false;
+    var li = c.closest(".exp"); if (li && li._open) li._open(true);
+    c.scrollIntoView({ behavior: REDUCE ? "auto" : "smooth", block: "start" });
+    c.classList.add("hit"); window.setTimeout(function(){ c.classList.remove("hit"); }, 1800);
+    return true;
+  }
+
+  var sections = [];
   EXPERIENCE.forEach(function(x){
     var projects = x.projects.filter(function(p){ return DRAFT || !p.draft; });
-    // cards without visuals go last and run full width, so they never sit beside a tall image card
-    projects = projects.filter(function(p){ return names(p).length; }).concat(projects.filter(function(p){ return !names(p).length; }));
+    // cards without visuals go last
+    var seen = projects.filter(function(p){ return names(p).length; }),
+        plain = projects.filter(function(p){ return !names(p).length; });
+    projects = seen.concat(plain);
+
     var li = el("li","exp"); li.id = x.id;
     li.appendChild(el("div","mark",x.mark));
     var b = el("div","exp-body");
 
-    var main = el("div","exp-main");
-    var txt = el("div");
+    var main = el("div","exp-main"), txt = el("div");
     main.appendChild(txt);
     var top = el("div","exp-top");
     top.appendChild(el("h3",null,x.title));
@@ -517,49 +838,81 @@ var EXPERIENCE = [
     }
     txt.appendChild(el("p","summary",x.summary));
     if (x.photo){
-      var fig = el("figure","me");
+      var fig = el("figure","me"), fim = img(still(x.folder, x.photo.img, false), x.photo.alt);
+      fim.onerror = function(){ fig.remove(); main.classList.remove("has-photo"); };
+      fig.appendChild(fim);
       main.classList.add("has-photo");
-      image(fig, x.folder, x.photo.img, false, function(){ main.classList.remove("has-photo"); });
-      fig.querySelector("img") && (fig.querySelector("img").alt = x.photo.alt);
       main.appendChild(fig);
     }
     b.appendChild(main);
 
-    // thumbnail strip: first four projects that have an image
-    var strip = el("div","strip");
-    projects.filter(function(p){ return names(p).length; }).slice(0,4).forEach(function(p){
-      var th = el("div","th");
-      image(th, p.folder || x.folder, names(p).filter(function(n){ return !isVideo(n); })[0], true, function(){ if(!strip.children.length) strip.remove(); });
-      strip.appendChild(th);
+    // preview tiles: every project that has a visual, shown before anything is opened
+    var tiles = el("div","tiles");
+    seen.forEach(function(p){
+      var a = el("a","tile"); a.href = "#" + slug(p.t);
+      var bx = el("span","tile-img"), first = names(p)[0];
+      var ti = img(still(p.folder || x.folder, first, true), "");
+      ti.onerror = function(){ if (DRAFT) slot(bx, p.folder || x.folder, first); else a.remove(); };
+      if (arOf(first) < .9) ti.style.objectPosition = "50% 72%";   // tall photo: keep the lower middle in frame
+      bx.appendChild(ti);
+      // with a mouse, hovering swaps the first view for the next still; it loads on the first hover
+      var second = names(p).slice(1).filter(function(nm){ return !isVideo(nm); })[0];
+      if (second) a.addEventListener("pointerenter", function(e){
+        if (e.pointerType !== "mouse" || bx.querySelector(".alt")) return;
+        var t2 = img(still(p.folder || x.folder, second, true), "", true); t2.className = "alt";
+        if (arOf(second) < .9) t2.style.objectPosition = "50% 72%";
+        t2.onerror = function(){ t2.remove(); };
+        bx.appendChild(t2);
+      });
+      a.appendChild(bx);
+      a.appendChild(el("span","tile-t",p.t));
+      if (p.ctx) a.appendChild(el("span","tile-c",p.ctx));
+      a.addEventListener("click", function(e){ e.preventDefault(); goCard(slug(p.t)); });
+      tiles.appendChild(a);
     });
-    if (strip.children.length) b.appendChild(strip);
+    if (seen.length) b.appendChild(tiles);
+    if (plain.length && seen.length){
+      var also = el("p","also","Also: ");
+      plain.forEach(function(p, k){
+        if (k) also.appendChild(document.createTextNode(" · "));
+        var a = el("a",null,p.t); a.href = "#" + slug(p.t);
+        a.addEventListener("click", function(e){ e.preventDefault(); goCard(slug(p.t)); });
+        also.appendChild(a);
+      });
+      b.appendChild(also);
+    }
 
     var btn = el("button","toggle");
     btn.type = "button";
     btn.setAttribute("aria-expanded","false");
     btn.setAttribute("aria-controls", x.id + "-panel");
-    var lbl = el("span",null,"");
     var n = projects.length, word = n === 1 ? " project" : " projects";
-    lbl.textContent = "Show " + n + word;
+    var lbl = el("span",null,"Read " + n + word);
     btn.appendChild(lbl);
     btn.appendChild(el("span","chev"));
     b.appendChild(btn);
 
     var panel = el("div","panel"); panel.id = x.id + "-panel"; panel.hidden = true;
     var grid = el("div","grid");
-    // if the normal cards leave one alone in the last row, let it span the full width
-    var narrow = projects.filter(function(p){ return !p.wide && names(p).length; });
-    var lastAlone = narrow.length % 2 === 1 ? narrow[narrow.length-1] : null;
+    // every card is a half cell except the ones marked wide; if that leaves one alone, it spans the row
+    var half = projects.filter(function(p){ return !p.wide; });
+    var lastAlone = half.length % 2 === 1 ? half[half.length - 1] : null;
     projects.forEach(function(p){
-      var list = names(p);
-      var c = el("article","card" + (p.wide || p === lastAlone ? " wide" : "") + (list.length ? "" : " textonly"));
-      if (list.length > 1){ var cb0 = el("div","img"); c.appendChild(cb0); carousel(cb0, p.folder || x.folder, list); }
-      else if (list.length){ var box = el("div","img"); image(box, p.folder || x.folder, list[0], false); c.appendChild(box); }
+      var has = names(p).length > 0;
+      var c = el("article","card" + (p.wide || p === lastAlone ? " wide" : "") + (has ? "" : " textonly"));
+      c.id = slug(p.t);
+      var m = buildMedia(c, p, p.folder || x.folder);
+      if (m) c.appendChild(m);
       var cb = el("div","cbody");
       var ct = el("div","ctop"); ct.appendChild(el("h4",null,p.t)); if (p.ctx) ct.appendChild(el("span","ctx",p.ctx)); cb.appendChild(ct);
+      if (p.specs && p.specs.length){
+        var sp = el("ul","specs");
+        p.specs.forEach(function(s){ var i = el("li"); i.appendChild(el("b",null,s[0])); i.appendChild(el("span",null,s[1])); sp.appendChild(i); });
+        cb.appendChild(sp);
+      }
       if (p.p) cb.appendChild(el("p",null,p.p));
-      if (p.finding){ var fd=el("div","broke"); fd.appendChild(el("span","k","What the test showed")); fd.appendChild(el("p",null,p.finding)); cb.appendChild(fd); }
-      if (p.broke){ var br=el("div","broke"); br.appendChild(el("span","k","What broke")); br.appendChild(el("p",null,p.broke)); cb.appendChild(br); }
+      if (p.finding){ var fd=el("div","note finding"); fd.appendChild(el("span","k","What the test showed")); fd.appendChild(el("p",null,p.finding)); cb.appendChild(fd); }
+      if (p.broke){ var br=el("div","note broke"); br.appendChild(el("span","k","What broke")); br.appendChild(el("p",null,p.broke)); cb.appendChild(br); }
       if (DRAFT && p.needs) cb.appendChild(el("div","needs","Needs: " + p.needs));
       if (p.tags && p.tags.length){ var tg=el("div","tags"); p.tags.forEach(function(t){ tg.appendChild(el("span","tag",t)); }); cb.appendChild(tg); }
       c.appendChild(cb);
@@ -570,23 +923,89 @@ var EXPERIENCE = [
 
     function set(open){
       panel.hidden = !open;
-      if (open && !REDUCE) [].forEach.call(panel.querySelectorAll("video"), function(v){ var p = v.play(); if (p && p.catch) p.catch(function(){}); });
+      li.classList.toggle("open", open);
+      if (open && !REDUCE) [].forEach.call(panel.querySelectorAll("video"), function(v){ var pl = v.play(); if (pl && pl.catch) pl.catch(function(){}); });
       btn.setAttribute("aria-expanded", open ? "true" : "false");
-      lbl.textContent = open ? "Hide projects" : "Show " + n + word;
+      lbl.textContent = open ? "Hide details" : "Read " + n + word;
+      syncAll();
     }
     btn.addEventListener("click", function(){ set(panel.hidden); });
     li._open = set;
+    li._isOpen = function(){ return !panel.hidden; };
+    sections.push(li);
 
     li.appendChild(b);
     tl.appendChild(li);
   });
 
-  // photo strips in static sections (e.g. the machining course)
+  var allBtn = document.getElementById("allBtn");
+  function syncAll(){
+    var every = sections.length && sections.every(function(s){ return s._isOpen(); });
+    allBtn.textContent = every ? "Collapse all" : "Expand all";
+    allBtn.setAttribute("aria-pressed", every ? "true" : "false");
+  }
+  allBtn.addEventListener("click", function(){
+    var open = !sections.every(function(s){ return s._isOpen(); });
+    sections.forEach(function(s){ s._open(open); });
+  });
+
+  /* ---------- masthead: CAD beside the built part ---------- */
+  var dbRow = document.getElementById("dbRow"), dbTabs = document.getElementById("dbTabs"), dbGo = document.getElementById("dbGo"),
+      dbCad = document.getElementById("dbCad"), dbBuilt = document.getElementById("dbBuilt"), heroAt = 0;
+  function heroItems(){
+    var h = HERO[heroAt];
+    return [{ folder: h.folder, name: h.cad, title: h.project, alt: h.project + ", CAD view" },
+            { folder: h.folder, name: h.built, title: h.project, alt: h.project + ", built" }];
+  }
+  function setHero(k, instant){
+    heroAt = k;
+    var h = HERO[k], a = arOf(h.cad), bb = arOf(h.built);
+    [].forEach.call(dbTabs.children, function(t, j){ t.setAttribute("aria-selected", j === k ? "true" : "false"); t.tabIndex = j === k ? 0 : -1; });
+    function apply(){
+      dbRow.style.setProperty("--sum", a + bb);
+      dbCad.style.setProperty("--ar", a); dbBuilt.style.setProperty("--ar", bb);
+      var ci = dbCad.querySelector("img"), bi = dbBuilt.querySelector("img");
+      ci.src = still(h.folder, h.cad, false); ci.alt = h.project + ", CAD view";
+      bi.src = still(h.folder, h.built, false); bi.alt = h.project + ", built";
+      dbGo.href = "#" + slug(h.project);
+      dbRow.classList.remove("out");
+    }
+    if (instant || REDUCE) apply(); else { dbRow.classList.add("out"); window.setTimeout(apply, 180); }
+  }
+  HERO.forEach(function(h, k){
+    var t = el("button","db-tab",h.tab); t.type = "button"; t.setAttribute("role","tab");
+    t.addEventListener("click", function(){ if (k !== heroAt) setHero(k); });
+    t.addEventListener("keydown", function(e){
+      var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0; if (!d) return;
+      var j = (k + d + HERO.length) % HERO.length; setHero(j); dbTabs.children[j].focus();
+    });
+    dbTabs.appendChild(t);
+  });
+  setHero(0, true);
+  dbCad.addEventListener("click", function(){ openLB(heroItems(), 0, dbCad); });
+  dbBuilt.addEventListener("click", function(){ openLB(heroItems(), 1, dbBuilt); });
+  dbGo.addEventListener("click", function(e){ if (goCard(dbGo.getAttribute("href").slice(1))) e.preventDefault(); });
+
+  /* ---------- small things ---------- */
+  // copy the email address; if the browser refuses, select it so it can be copied by hand
+  var copyBtn = document.getElementById("copyMail"), mailLink = document.getElementById("mailLink");
+  copyBtn.addEventListener("click", function(){
+    var done = function(){ copyBtn.textContent = "Copied"; window.setTimeout(function(){ copyBtn.textContent = "Copy"; }, 1600); };
+    var pick = function(){ var r = document.createRange(); r.selectNodeContents(mailLink); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); };
+    try { navigator.clipboard.writeText(mailLink.textContent).then(done, pick); } catch (err) { pick(); }
+  });
+
+  // photo strips in static sections (the machining course)
   [].forEach.call(document.querySelectorAll(".cert-shots"), function(row){
-    var folder = row.getAttribute("data-folder");
-    [].forEach.call(row.querySelectorAll(".cs"), function(box){
-      image(box, folder, box.getAttribute("data-img"), true, function(){ if(!row.querySelector(".cs")) row.remove(); });
-      var im = box.querySelector("img"); if (im) im.alt = box.getAttribute("data-alt") || "";
+    var folder = row.getAttribute("data-folder"), title = row.getAttribute("data-title") || "";
+    var boxes = [].slice.call(row.querySelectorAll(".cs"));
+    var items = boxes.map(function(box){ return { folder: folder, name: box.getAttribute("data-img"), title: title, alt: box.getAttribute("data-alt") || "" }; });
+    boxes.forEach(function(box, k){
+      var im = img(still(folder, items[k].name, true), items[k].alt);
+      im.onerror = function(){ box.remove(); if (!row.querySelector(".cs")) row.remove(); };
+      box.appendChild(im);
+      box.setAttribute("aria-label", "Enlarge: " + items[k].alt);
+      box.addEventListener("click", function(){ openLB(items, k, box); });
     });
   });
 
@@ -601,15 +1020,17 @@ var EXPERIENCE = [
       var best = null, bv = 0;
       navSecs.forEach(function(sec){ if (!sec) return; var v = seenNav[sec.id] || 0; if (v > bv){ bv = v; best = sec.id; } });
       if (!best){ for (var k = navSecs.length - 1; k >= 0; k--){ if (navSecs[k] && navSecs[k].getBoundingClientRect().top < 120){ best = navSecs[k].id; break; } } }
+      if (!best && navSecs[0]) best = navSecs[0].id;   // above the first section
       if (best) markNav(best);
     }, {rootMargin: "-10% 0px -55% 0px", threshold: [0, .05, .15, .35, .6, 1]});
     navSecs.forEach(function(sec){ if (sec) navIO.observe(sec); });
   }
 
-  // open a section from a link like  site/#mcml
+  // open a section or a project from a link like  site/#mcml  or  site/#p-the-columbine
   var h = (location.hash || "").slice(1);
   var target = h && document.getElementById(h);
   if (target && target._open){ target._open(true); target.scrollIntoView(); }
+  else if (target && target.classList.contains("card")) goCard(h);
 })();
 </script>
 
